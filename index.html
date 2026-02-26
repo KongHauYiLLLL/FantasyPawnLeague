@@ -305,6 +305,30 @@
             background: #2a2a2a;
         }
 
+        .formation-slot.spearhead {
+            border-color: #c75b5b;
+            background: #2a2020;
+        }
+
+        .formation-slot.spearhead::after {
+            content: "SPEARHEAD";
+            font-size: 9px;
+            color: #c75b5b;
+            margin-top: 4px;
+        }
+
+        .formation-slot.anchor {
+            border-color: #5b7bc7;
+            background: #20202a;
+        }
+
+        .formation-slot.anchor::after {
+            content: "ANCHOR";
+            font-size: 9px;
+            color: #5b7bc7;
+            margin-top: 4px;
+        }
+
         .formation-hint {
             text-align: center;
             font-size: 12px;
@@ -584,6 +608,18 @@
             font-size: 12px;
         }
 
+        .team-slot.rising-star {
+            border-color: #c7b55b;
+            background: #2a2a20;
+        }
+
+        .team-slot.rising-star::after {
+            content: "★ RISING";
+            font-size: 9px;
+            color: #c7b55b;
+            margin-top: 4px;
+        }
+
         .selection-area {
             background: #202020;
             border: 1px solid #2a2a2a;
@@ -655,6 +691,10 @@
 
         .stat-value.capped {
             color: #c7b55b;
+        }
+
+        .stat-value.low {
+            color: #c75b5b;
         }
 
         /* Squad View */
@@ -753,6 +793,16 @@
 
         .player-detail .stat-value {
             color: #999;
+        }
+
+        .player-detail.rising-star {
+            border-color: #c7b55b;
+            background: #2a2a20;
+        }
+
+        .player-detail.rising-star .name::after {
+            content: " ★";
+            color: #c7b55b;
         }
 
         .swap-hint {
@@ -879,6 +929,15 @@
         .board-result.loss { color: #c75b5b; }
         .board-result.draw { color: #c7b55b; }
 
+        .board-result.rivalry {
+            border-top-color: #c7b55b;
+        }
+
+        .board-result.rivalry::before {
+            content: "⚔ RIVALRY ";
+            color: #c7b55b;
+        }
+
         .resolve-btn {
             display: block;
             width: 100%;
@@ -957,6 +1016,24 @@
             border: 1px solid #4a3a4a;
             font-size: 14px;
             color: #fff;
+        }
+
+        .legacy-bonus {
+            margin-top: 20px;
+            padding: 16px;
+            background: #2a2520;
+            border: 1px solid #5a5040;
+            font-size: 13px;
+            color: #b0a080;
+        }
+
+        .anchor-triggered {
+            margin-top: 20px;
+            padding: 16px;
+            background: #20202a;
+            border: 1px solid #3a3a4a;
+            font-size: 13px;
+            color: #7a7a9a;
         }
 
         /* Tutorial */
@@ -1102,6 +1179,33 @@
             font-size: 13px;
         }
 
+        /* Cross Training Modal */
+        .cross-train-option {
+            background: #252525;
+            border: 1px solid #333;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cross-train-option:hover {
+            border-color: #555;
+            background: #2a2a2a;
+        }
+
+        .cross-train-option h4 {
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .cross-train-option .swap-arrow {
+            color: #a09070;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
         @media (max-width: 768px) {
             .menu-grid,
             .training-grid,
@@ -1242,7 +1346,11 @@
         <!-- Formation Screen -->
         <div id="formation-screen" class="screen">
             <h2 style="text-align: center;">Set Your Formation</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 30px;">Drag players to arrange match order (1 vs 1, 2 vs 2, etc.)</p>
+            <p style="text-align: center; color: #666; margin-bottom: 10px;">Drag players to arrange match order (1 vs 1, 2 vs 2, etc.)</p>
+            <p style="text-align: center; color: #888; font-size: 12px; margin-bottom: 30px;">
+                <span style="color: #c75b5b;">Spearhead:</span> Highest Attack at #1 gets +2 Attack but -1 to other stats | 
+                <span style="color: #5b7bc7;">Anchor:</span> Highest Defense at #4 turns first loss into draw, gives random teammate +1 Defense
+            </p>
             
             <div class="formation-area">
                 <div class="formation-slots" id="formation-slots"></div>
@@ -1319,8 +1427,13 @@
                 </div>
 
                 <div class="training-category">
-                    <h4>Support</h4>
+                    <h4>Advanced Training</h4>
                     <div class="training-grid">
+                        <div class="training-option" id="train-cross" onclick="showCrossTraining()">
+                            <h4>Cross-Training</h4>
+                            <p>Swap two stats on one player</p>
+                            <div class="cost">4 Points</div>
+                        </div>
                         <div class="training-option" id="train-scout" onclick="buyScout()">
                             <h4>Scout Training</h4>
                             <p>Gain 2 scout tokens</p>
@@ -1330,11 +1443,6 @@
                             <h4>Advanced Intel</h4>
                             <p>Reveal full opponent formation next match</p>
                             <div class="cost">4 Points</div>
-                        </div>
-                        <div class="training-option" id="train-morale" onclick="boostMorale()">
-                            <h4>Morale Boost</h4>
-                            <p>Next match: +1 to all chosen attributes</p>
-                            <div class="cost">3 Points</div>
                         </div>
                     </div>
                 </div>
@@ -1360,6 +1468,18 @@
                 <div id="train-players"></div>
                 <div style="text-align: center; margin-top: 20px;">
                     <button class="back-btn" onclick="closeTrainModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cross Training Modal -->
+        <div id="cross-train-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 100; justify-content: center; align-items: center;">
+            <div style="background: #202020; border: 1px solid #333; padding: 30px; max-width: 500px; width: 90%;">
+                <h3 style="margin-bottom: 20px; color: #a09070;">Cross-Training: Swap Stats</h3>
+                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Select a player and choose two stats to swap. Cost: 4 points.</p>
+                <div id="cross-train-players"></div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="back-btn" onclick="closeCrossTrainModal()">Cancel</button>
                 </div>
             </div>
         </div>
@@ -1455,16 +1575,29 @@
                 <p>Select an identity. Receive 2 core players with 8+ in that attribute, then draft 2 more.</p>
                 
                 <h3>Formation Tactics</h3>
-                <p>Arrange your 4 players in order before each match. Your #1 faces their #1, etc. Scout to see opponent formation.</p>
+                <p>Arrange your 4 players in order before each match. Your #1 faces their #1, etc.</p>
+                <ul>
+                    <li><strong>Spearhead:</strong> Highest Attack at #1 gets +2 Attack but -1 to other stats</li>
+                    <li><strong>Anchor:</strong> Highest Defense at #4 turns first loss into draw, gives random teammate +1 Defense</li>
+                </ul>
+                
+                <h3>Rising Stars</h3>
+                <p>Players with all stats under 8 who win 3 matches become Rising Stars, gaining +2 to growth rate.</p>
+                
+                <h3>Rivalry System</h3>
+                <p>Players who faced the same opponent in consecutive matches enter a grudge match with random +/-1 modifier.</p>
+                
+                <h3>Legacy Bonus</h3>
+                <p>After 3 seasons, a random retired player becomes a coach, giving +1 to their strongest attribute for the whole team.</p>
+                
+                <h3>Cross-Training</h3>
+                <p>Spend 4 points to swap two stats on a player (e.g., Attack 9/Defense 5 becomes Attack 5/Defense 9).</p>
                 
                 <h3>Seasons (10 Matches)</h3>
                 <p>After 10 matches with a squad, you must redraft. Points and league progress carry over.</p>
                 
                 <h3>Dynamic Difficulty</h3>
                 <p>AI scales with your stats. Higher leagues = stronger opponents. 15 is the absolute stat cap.</p>
-                
-                <h3>Training Risk</h3>
-                <p>Higher stats = higher failure chance. Training above 10 is risky but rewarding.</p>
                 
                 <h3>Squad Swaps</h3>
                 <p>After unlocking your squad (5 wins), you get 2 swap tokens to change players via the 1-of-3 draft method.</p>
@@ -1495,6 +1628,7 @@
                 <div id="changes-display"></div>
                 <div id="league-change-display"></div>
                 <div id="season-end-display"></div>
+                <div id="anchor-display"></div>
                 <button class="back-btn" onclick="returnToMenu()" style="margin-top: 30px;">Continue</button>
             </div>
         </div>
@@ -1517,67 +1651,98 @@
 
         const STAT_CAP = 15;
 
-        // Embedded player data (previously players.json)
+        // Updated player pool with more variance and unbalanced players
         const playerPool = [
+            // Elite tier (9-10)
             {"name": "Magnus Carlsen", "attack": 9, "defense": 9, "positional": 10},
             {"name": "Garry Kasparov", "attack": 10, "defense": 7, "positional": 9},
             {"name": "Bobby Fischer", "attack": 10, "defense": 8, "positional": 9},
             {"name": "Anatoly Karpov", "attack": 7, "defense": 10, "positional": 10},
-            {"name": "Vladimir Kramnik", "attack": 7, "defense": 10, "positional": 9},
-            {"name": "Viswanathan Anand", "attack": 8, "defense": 9, "positional": 9},
-            {"name": "Ding Liren", "attack": 8, "defense": 9, "positional": 9},
-            {"name": "Fabiano Caruana", "attack": 8, "defense": 9, "positional": 9},
-            {"name": "Ian Nepomniachtchi", "attack": 9, "defense": 7, "positional": 8},
-            {"name": "Hikaru Nakamura", "attack": 9, "defense": 8, "positional": 8},
-            {"name": "Alireza Firouzja", "attack": 9, "defense": 7, "positional": 8},
             {"name": "Mikhail Tal", "attack": 10, "defense": 6, "positional": 7},
             {"name": "José Raúl Capablanca", "attack": 8, "defense": 9, "positional": 10},
-            {"name": "Vasily Smyslov", "attack": 8, "defense": 9, "positional": 10},
             {"name": "Tigran Petrosian", "attack": 6, "defense": 10, "positional": 9},
+            
+            // Strong tier (7-8)
+            {"name": "Hikaru Nakamura", "attack": 9, "defense": 8, "positional": 8},
+            {"name": "Fabiano Caruana", "attack": 8, "defense": 9, "positional": 9},
+            {"name": "Ding Liren", "attack": 8, "defense": 9, "positional": 9},
+            {"name": "Ian Nepomniachtchi", "attack": 9, "defense": 7, "positional": 8},
+            {"name": "Alireza Firouzja", "attack": 9, "defense": 7, "positional": 8},
             {"name": "Levon Aronian", "attack": 9, "defense": 7, "positional": 9},
-            {"name": "Alexander Grischuk", "attack": 9, "defense": 7, "positional": 8},
-            {"name": "Maxime Vachier-Lagrave", "attack": 9, "defense": 7, "positional": 8},
-            {"name": "Shakhriyar Mamedyarov", "attack": 9, "defense": 7, "positional": 8},
-            {"name": "Veselin Topalov", "attack": 9, "defense": 6, "positional": 8},
-            {"name": "Richard Rapport", "attack": 9, "defense": 6, "positional": 8},
-            {"name": "Judit Polgár", "attack": 9, "defense": 7, "positional": 8},
             {"name": "Wesley So", "attack": 7, "defense": 9, "positional": 9},
-            {"name": "Sergey Karjakin", "attack": 7, "defense": 9, "positional": 8},
-            {"name": "Anish Giri", "attack": 7, "defense": 9, "positional": 9},
-            {"name": "Peter Leko", "attack": 7, "defense": 9, "positional": 8},
-            {"name": "Boris Gelfand", "attack": 7, "defense": 9, "positional": 9},
+            {"name": "Anish Giri", "attack": 6, "defense": 9, "positional": 9},
+            {"name": "Vladimir Ivanchuk", "attack": 9, "defense": 7, "positional": 9},
+            
+            // Specialist tier (unbalanced - high in one, low in others)
+            {"name": "Baadur Jobava", "attack": 9, "defense": 5, "positional": 6},
+            {"name": "Valentina Gunina", "attack": 9, "defense": 5, "positional": 6},
+            {"name": "Alexander Morozevich", "attack": 9, "defense": 5, "positional": 8},
+            {"name": "Shakhriyar Mamedyarov", "attack": 9, "defense": 6, "positional": 7},
+            {"name": "Veselin Topalov", "attack": 9, "defense": 5, "positional": 7},
+            {"name": "Richard Rapport", "attack": 9, "defense": 5, "positional": 7},
+            {"name": "Wei Yi", "attack": 9, "defense": 5, "positional": 7},
+            {"name": "Ulf Andersson", "attack": 5, "defense": 9, "positional": 9},
+            {"name": "Sergey Karjakin", "attack": 6, "defense": 9, "positional": 8},
+            {"name": "Peter Leko", "attack": 6, "defense": 9, "positional": 8},
+            {"name": "Boris Gelfand", "attack": 6, "defense": 9, "positional": 9},
+            {"name": "Aron Nimzowitsch", "attack": 6, "defense": 8, "positional": 10},
+            {"name": "Akiba Rubinstein", "attack": 6, "defense": 9, "positional": 10},
+            
+            // Average tier (6-7)
+            {"name": "Viswanathan Anand", "attack": 7, "defense": 8, "positional": 8},
+            {"name": "Vladimir Kramnik", "attack": 7, "defense": 9, "positional": 9},
+            {"name": "Maxime Vachier-Lagrave", "attack": 9, "defense": 7, "positional": 8},
+            {"name": "Alexander Grischuk", "attack": 9, "defense": 7, "positional": 8},
+            {"name": "Judit Polgár", "attack": 9, "defense": 7, "positional": 8},
             {"name": "Viktor Korchnoi", "attack": 8, "defense": 9, "positional": 8},
             {"name": "Paul Keres", "attack": 8, "defense": 8, "positional": 9},
-            {"name": "Aron Nimzowitsch", "attack": 7, "defense": 8, "positional": 10},
-            {"name": "Akiba Rubinstein", "attack": 7, "defense": 9, "positional": 10},
-            {"name": "Miguel Najdorf", "attack": 8, "defense": 7, "positional": 8},
+            {"name": "Boris Spassky", "attack": 8, "defense": 8, "positional": 9},
+            {"name": "Emanuel Lasker", "attack": 8, "defense": 9, "positional": 9},
+            {"name": "Vasily Smyslov", "attack": 8, "defense": 9, "positional": 10},
             {"name": "Samuel Reshevsky", "attack": 8, "defense": 8, "positional": 8},
             {"name": "Efim Geller", "attack": 8, "defense": 8, "positional": 9},
-            {"name": "Ulf Andersson", "attack": 6, "defense": 9, "positional": 9},
-            {"name": "Pentala Harikrishna", "attack": 7, "defense": 8, "positional": 8},
-            {"name": "Jan-Krzysztof Duda", "attack": 8, "defense": 8, "positional": 8},
-            {"name": "Teimour Radjabov", "attack": 7, "defense": 9, "positional": 8},
+            {"name": "Miguel Najdorf", "attack": 8, "defense": 7, "positional": 8},
+            {"name": "Leinier Domínguez", "attack": 8, "defense": 8, "positional": 8},
             {"name": "Gata Kamsky", "attack": 8, "defense": 8, "positional": 8},
-            {"name": "Wei Yi", "attack": 9, "defense": 6, "positional": 8},
-            {"name": "Gukesh Dommaraju", "attack": 9, "defense": 8, "positional": 8},
-            {"name": "Arjun Erigaisi", "attack": 9, "defense": 7, "positional": 8},
-            {"name": "R Praggnanandhaa", "attack": 8, "defense": 8, "positional": 8},
-            {"name": "Nodirbek Abdusattorov", "attack": 8, "defense": 8, "positional": 8},
-            {"name": "Hans Niemann", "attack": 8, "defense": 7, "positional": 7},
-            {"name": "Vincent Keymer", "attack": 8, "defense": 8, "positional": 8},
-            {"name": "Nihal Sarin", "attack": 8, "defense": 7, "positional": 8},
             {"name": "David Navara", "attack": 8, "defense": 8, "positional": 8},
-            {"name": "Baadur Jobava", "attack": 9, "defense": 6, "positional": 7},
             {"name": "Hou Yifan", "attack": 8, "defense": 8, "positional": 9},
             {"name": "Humpy Koneru", "attack": 8, "defense": 8, "positional": 8},
             {"name": "Alexandra Kosteniuk", "attack": 8, "defense": 7, "positional": 8},
-            {"name": "Valentina Gunina", "attack": 9, "defense": 6, "positional": 7},
-            {"name": "Leinier Domínguez", "attack": 8, "defense": 8, "positional": 8},
-            {"name": "Alexander Morozevich", "attack": 9, "defense": 6, "positional": 8},
-            {"name": "Vladimir Ivanchuk", "attack": 9, "defense": 7, "positional": 9},
-            {"name": "Boris Spassky", "attack": 8, "defense": 8, "positional": 9},
-            {"name": "Wilhelm Steinitz", "attack": 7, "defense": 8, "positional": 9},
-            {"name": "Emanuel Lasker", "attack": 8, "defense": 9, "positional": 9}
+            
+            // Brutally honest tier (4-6) - weaknesses exposed
+            {"name": "Hans Niemann", "attack": 8, "defense": 6, "positional": 5},
+            {"name": "Pentala Harikrishna", "attack": 7, "defense": 7, "positional": 6},
+            {"name": "Jan-Krzysztof Duda", "attack": 8, "defense": 6, "positional": 7},
+            {"name": "Teimour Radjabov", "attack": 7, "defense": 8, "positional": 6},
+            {"name": "Gukesh Dommaraju", "attack": 9, "defense": 6, "positional": 6},
+            {"name": "Arjun Erigaisi", "attack": 9, "defense": 6, "positional": 7},
+            {"name": "R Praggnanandhaa", "attack": 8, "defense": 6, "positional": 7},
+            {"name": "Nodirbek Abdusattorov", "attack": 8, "defense": 7, "positional": 6},
+            {"name": "Vincent Keymer", "attack": 7, "defense": 7, "positional": 7},
+            {"name": "Nihal Sarin", "attack": 8, "defense": 6, "positional": 7},
+            {"name": "Wilhelm Steinitz", "attack": 6, "defense": 7, "positional": 8},
+            
+            // Very weak in specific areas
+            {"name": "Dawid Janowski", "attack": 9, "defense": 4, "positional": 5},
+            {"name": "Henry Bird", "attack": 8, "defense": 4, "positional": 5},
+            {"name": "Joseph Blackburne", "attack": 7, "defense": 5, "positional": 6},
+            {"name": "Isidor Gunsberg", "attack": 6, "defense": 6, "positional": 5},
+            {"name": "Mikhail Chigorin", "attack": 8, "defense": 5, "positional": 4},
+            {"name": "Simon Winawer", "attack": 7, "defense": 5, "positional": 5},
+            {"name": "Carl Schlechter", "attack": 5, "defense": 8, "positional": 7},
+            {"name": "Geza Maroczy", "attack": 5, "defense": 8, "positional": 8},
+            {"name": "Frank Marshall", "attack": 9, "defense": 4, "positional": 5},
+            {"name": "Rudolf Spielmann", "attack": 9, "defense": 4, "positional": 5},
+            {"name": "Ossip Bernstein", "attack": 7, "defense": 5, "positional": 6},
+            {"name": "Savielly Tartakower", "attack": 7, "defense": 5, "positional": 7},
+            {"name": "Aron Nimzowitsch (Early)", "attack": 5, "defense": 6, "positional": 9},
+            {"name": "Richard Réti", "attack": 6, "defense": 6, "positional": 8},
+            {"name": "Efim Bogoljubov", "attack": 8, "defense": 5, "positional": 5},
+            {"name": "Frederick Yates", "attack": 6, "defense": 5, "positional": 5},
+            {"name": "Edgard Colle", "attack": 7, "defense": 5, "positional": 6},
+            {"name": "Akiba Rubinstein (Late)", "attack": 5, "defense": 7, "positional": 9},
+            {"name": "Oldrich Duras", "attack": 7, "defense": 6, "positional": 6},
+            {"name": "Amos Burn", "attack": 5, "defense": 7, "positional": 6}
         ];
 
         let gameState = {
@@ -1606,7 +1771,13 @@
             moraleBoost: false,
             fullIntel: false,
             swapTokens: 0,
-            swappedPlayers: []
+            swappedPlayers: [],
+            // New mechanics
+            risingStars: [], // Array of player indices who are rising stars
+            lastOpponents: [], // Array of opponent names faced last match
+            legacyCoaches: [], // Array of retired players who became coaches
+            anchorUsed: false, // Whether anchor ability was used this match
+            playerWins: {} // Track wins per player for Rising Star qualification
         };
 
         let currentSwapIndex = null;
@@ -1617,7 +1788,7 @@
         }
 
         function loadGameState() {
-            const saved = localStorage.getItem('fpl_save_v7');
+            const saved = localStorage.getItem('fpl_save_v8');
             if (saved) {
                 const data = JSON.parse(saved);
                 Object.assign(gameState, data);
@@ -1635,12 +1806,18 @@
                 if (gameState.seasonsCompleted === undefined) gameState.seasonsCompleted = 0;
                 if (gameState.swapTokens === undefined) gameState.swapTokens = 0;
                 if (gameState.swappedPlayers === undefined) gameState.swappedPlayers = [];
+                // New mechanics init
+                if (gameState.risingStars === undefined) gameState.risingStars = [];
+                if (gameState.lastOpponents === undefined) gameState.lastOpponents = [];
+                if (gameState.legacyCoaches === undefined) gameState.legacyCoaches = [];
+                if (gameState.anchorUsed === undefined) gameState.anchorUsed = false;
+                if (gameState.playerWins === undefined) gameState.playerWins = {};
             }
         }
 
         function saveGameState() {
             const data = {...gameState};
-            localStorage.setItem('fpl_save_v7', JSON.stringify(data));
+            localStorage.setItem('fpl_save_v8', JSON.stringify(data));
         }
 
         function updateMenuDisplay() {
@@ -1665,7 +1842,6 @@
 
         // Calculate AI difficulty based on user team stats and league
         function getAIDifficulty() {
-            // Calculate average user stat
             let totalStats = 0;
             let statCount = 0;
             gameState.userTeam.forEach(p => {
@@ -1674,16 +1850,12 @@
             });
             const avgUserStat = totalStats / statCount;
             
-            // Base difficulty from league - reduced scaling
             const leagueBonus = gameState.currentLeague * 0.3;
-            
-            // Dynamic scaling: AI averages around user average + league bonus
-            // But with variance so some are stronger, some weaker
-            const targetAvg = Math.min(11, avgUserStat + leagueBonus - 0.5); // Slightly easier
+            const targetAvg = Math.min(11, avgUserStat + leagueBonus - 0.5);
             
             return {
                 targetAvg: targetAvg,
-                variance: 1.5 + (gameState.currentLeague * 0.2), // Reduced variance
+                variance: 1.5 + (gameState.currentLeague * 0.2),
                 minStat: Math.max(4, Math.floor(targetAvg - 1.5)),
                 maxStat: Math.min(STAT_CAP, Math.ceil(targetAvg + 2))
             };
@@ -1749,7 +1921,7 @@
         }
 
         function executeResign() {
-            localStorage.removeItem('fpl_save_v7');
+            localStorage.removeItem('fpl_save_v8');
             gameState = {
                 identity: null,
                 userTeam: [],
@@ -1776,7 +1948,12 @@
                 moraleBoost: false,
                 fullIntel: false,
                 swapTokens: 0,
-                swappedPlayers: []
+                swappedPlayers: [],
+                risingStars: [],
+                lastOpponents: [],
+                legacyCoaches: [],
+                anchorUsed: false,
+                playerWins: {}
             };
             closeResignModal();
             updateMenuDisplay();
@@ -1789,6 +1966,11 @@
                 alert('Season ended! You must redraft your squad.');
                 resetSquad();
                 return;
+            }
+            
+            // Check for Legacy bonus after 3 seasons
+            if (gameState.seasonsCompleted >= 3 && gameState.legacyCoaches.length === 0) {
+                generateLegacyCoach();
             }
             
             if (gameState.userTeam.length === 4 && gameState.squadLocked) {
@@ -1807,6 +1989,43 @@
             }
         }
 
+        function generateLegacyCoach() {
+            // Pick random player from playerPool who isn't in current team
+            const availableCoaches = playerPool.filter(p => 
+                !gameState.userTeam.some(teamP => teamP.name === p.name)
+            );
+            const coach = availableCoaches[Math.floor(Math.random() * availableCoaches.length)];
+            
+            // Find their strongest attribute
+            const stats = [
+                {attr: 'attack', val: coach.attack},
+                {attr: 'defense', val: coach.defense},
+                {attr: 'positional', val: coach.positional}
+            ];
+            stats.sort((a, b) => b.val - a.val);
+            const strongestAttr = stats[0].attr;
+            
+            gameState.legacyCoaches.push({
+                name: coach.name,
+                attribute: strongestAttr,
+                value: stats[0].val
+            });
+            
+            // Apply +1 to all current team members for that attribute
+            gameState.userTeam.forEach(p => {
+                if (p[strongestAttr] < STAT_CAP) {
+                    p[strongestAttr]++;
+                }
+            });
+            
+            saveGameState();
+            
+            // Show notification
+            setTimeout(() => {
+                alert(`Legacy Coach: ${coach.name} has joined your team! +1 ${strongestAttr} for all players.`);
+            }, 500);
+        }
+
         function resetSquad() {
             gameState.userTeam = [];
             gameState.squadLocked = false;
@@ -1816,6 +2035,11 @@
             gameState.formation = [0, 1, 2, 3];
             gameState.swapTokens = 0;
             gameState.swappedPlayers = [];
+            gameState.risingStars = [];
+            gameState.lastOpponents = [];
+            gameState.anchorUsed = false;
+            gameState.playerWins = {};
+            // Keep legacy coaches permanently
             saveGameState();
             showScreen('start-screen');
         }
@@ -1826,10 +2050,36 @@
             const container = document.getElementById('formation-slots');
             container.innerHTML = '';
             
+            // Find highest attack and defense for Spearhead/Anchor indicators
+            let highestAttack = -1;
+            let highestAttackIdx = -1;
+            let highestDefense = -1;
+            let highestDefenseIdx = -1;
+            
+            gameState.userTeam.forEach((p, idx) => {
+                if (p.attack > highestAttack) {
+                    highestAttack = p.attack;
+                    highestAttackIdx = idx;
+                }
+                if (p.defense > highestDefense) {
+                    highestDefense = p.defense;
+                    highestDefenseIdx = idx;
+                }
+            });
+            
             gameState.formation.forEach((teamIdx, position) => {
                 const player = gameState.userTeam[teamIdx];
                 const div = document.createElement('div');
                 div.className = 'formation-slot filled';
+                
+                // Add Spearhead or Anchor classes
+                if (position === 0 && teamIdx === highestAttackIdx) {
+                    div.classList.add('spearhead');
+                }
+                if (position === 3 && teamIdx === highestDefenseIdx) {
+                    div.classList.add('anchor');
+                }
+                
                 div.draggable = true;
                 div.dataset.position = position;
                 div.dataset.teamIdx = teamIdx;
@@ -1875,6 +2125,7 @@
             
             generateAITeam();
             gameState.aiFormation = shuffle([0, 1, 2, 3]);
+            gameState.anchorUsed = false; // Reset anchor for new match
         }
 
         let draggedElement = null;
@@ -1952,26 +2203,67 @@
             container.innerHTML = '';
             gameState.matchups = [];
             
+            // Find highest attack and defense for Spearhead/Anchor
+            let highestAttack = -1;
+            let highestAttackIdx = -1;
+            let highestDefense = -1;
+            let highestDefenseIdx = -1;
+            
+            gameState.userTeam.forEach((p, idx) => {
+                if (p.attack > highestAttack) {
+                    highestAttack = p.attack;
+                    highestAttackIdx = idx;
+                }
+                if (p.defense > highestDefense) {
+                    highestDefense = p.defense;
+                    highestDefenseIdx = idx;
+                }
+            });
+            
             for (let i = 0; i < 4; i++) {
                 const userIdx = gameState.formation[i];
                 const aiIdx = gameState.aiFormation[i];
                 const userPlayer = gameState.userTeam[userIdx];
                 const aiPlayer = gameState.aiTeam[aiIdx];
                 
-                let userValDisplay = userPlayer.attack;
+                // Check for rivalry - if this player faced same opponent last match
+                const isRivalry = gameState.lastOpponents.length > 0 && 
+                    gameState.lastOpponents[i] === aiPlayer.name;
+                
+                // Apply Spearhead bonus if applicable
+                let displayAttack = userPlayer.attack;
+                let displayDefense = userPlayer.defense;
+                let displayPositional = userPlayer.positional;
+                let isSpearhead = false;
+                
+                if (i === 0 && userIdx === highestAttackIdx) {
+                    displayAttack += 2;
+                    displayDefense = Math.max(1, displayDefense - 1);
+                    displayPositional = Math.max(1, displayPositional - 1);
+                    isSpearhead = true;
+                }
+                
+                let userValDisplay = displayAttack;
                 if (gameState.moraleBoost) userValDisplay += 1;
                 
                 const board = document.createElement('div');
                 board.className = 'board';
+                board.dataset.boardIndex = i;
+                board.dataset.userIdx = userIdx;
+                board.dataset.aiIdx = aiIdx;
+                board.dataset.isRivalry = isRivalry;
+                board.dataset.isSpearhead = isSpearhead;
+                board.dataset.isAnchor = (i === 3 && userIdx === highestDefenseIdx);
+                
                 board.innerHTML = `
                     <div class="board-player user">
-                        <div class="position">Your #${i + 1}</div>
+                        <div class="position">Your #${i + 1}${isRivalry ? ' ⚔' : ''}${isSpearhead ? ' 🔥' : ''}</div>
                         <div class="name">${userPlayer.name}</div>
                         <select class="attribute-select" id="user-attr-${i}" onchange="checkAllSelected()">
                             <option value="">Select...</option>
-                            <option value="attack">Attack (${userPlayer.attack}${gameState.moraleBoost ? '+1' : ''})</option>
-                            <option value="defense">Defense (${userPlayer.defense}${gameState.moraleBoost ? '+1' : ''})</option>
-                            <option value="positional">Positional (${userPlayer.positional}${gameState.moraleBoost ? '+1' : ''})</option>
+                            <option value="attack">Attack (${displayAttack}${gameState.moraleBoost ? '+1' : ''})</option>
+                            <option value="defense">Defense (${displayDefense}${gameState.moraleBoost ? '+1' : ''})</option>
+                            <option value="positional">Positional (${displayPositional}${gameState.moraleBoost ? '+1' : ''})</option>
                         </select>
                     </div>
                     <div class="board-vs">vs</div>
@@ -1988,7 +2280,15 @@
                     ai: aiPlayer,
                     userChoice: null,
                     aiChoice: null,
-                    result: null
+                    result: null,
+                    isRivalry: isRivalry,
+                    isSpearhead: isSpearhead,
+                    isAnchor: (i === 3 && userIdx === highestDefenseIdx),
+                    displayStats: {
+                        attack: displayAttack,
+                        defense: displayDefense,
+                        positional: displayPositional
+                    }
                 });
             }
             
@@ -2000,39 +2300,77 @@
             for (let i = 0; i < 4; i++) {
                 if (!document.getElementById(`user-attr-${i}`).value) allSelected = false;
             }
-                        document.getElementById('resolve-btn').disabled = !allSelected;
+            document.getElementById('resolve-btn').disabled = !allSelected;
         }
 
         function enterMatch() {
             let userScore = 0;
             let aiScore = 0;
+            let anchorTriggered = false;
+            let anchorBonusGiven = false;
+            
+            // Track current opponents for next match's rivalry check
+            const currentOpponents = [];
             
             for (let i = 0; i < 4; i++) {
                 const matchup = gameState.matchups[i];
                 const userAttr = document.getElementById(`user-attr-${i}`).value;
-                let userVal = matchup.user[userAttr];
+                
+                // Get display value (with Spearhead if applicable)
+                let userVal = matchup.displayStats[userAttr];
                 if (gameState.moraleBoost) userVal += 1;
                 
+                // Apply rivalry modifier if applicable
+                let rivalryMod = 0;
+                if (matchup.isRivalry) {
+                    rivalryMod = Math.random() > 0.5 ? 1 : -1;
+                    userVal += rivalryMod;
+                }
+                
                 const aiVal = matchup.ai[userAttr];
+                
+                currentOpponents.push(matchup.ai.name);
                 
                 const opponentStatus = document.getElementById(`opponent-status-${i}`);
                 opponentStatus.textContent = `${userAttr} (${aiVal})`;
                 opponentStatus.className = 'ai-attribute revealed';
                 
-                matchup.userChoice = { name: userAttr, val: userVal };
+                matchup.userChoice = { name: userAttr, val: userVal, baseVal: matchup.user[userAttr] };
                 matchup.aiChoice = { name: userAttr, val: aiVal };
                 
                 let result;
+                let actualResult; // For scoring purposes
+                
                 if (userVal > aiVal) {
                     result = 'win';
+                    actualResult = 'win';
                     userScore++;
                 } else if (userVal < aiVal) {
-                    result = 'loss';
-                    aiScore++;
+                    // Check for Anchor ability on board 4
+                    if (matchup.isAnchor && !gameState.anchorUsed && !anchorTriggered) {
+                        result = 'draw';
+                        actualResult = 'draw';
+                        anchorTriggered = true;
+                        gameState.anchorUsed = true;
+                        
+                        // Give random teammate +1 defense
+                        const otherIndices = [0, 1, 2].filter(idx => idx !== i);
+                        const randomTeammateIdx = otherIndices[Math.floor(Math.random() * otherIndices.length)];
+                        const teammate = gameState.userTeam[gameState.formation[randomTeammateIdx]];
+                        if (teammate.defense < STAT_CAP) {
+                            teammate.defense++;
+                            anchorBonusGiven = true;
+                        }
+                    } else {
+                        result = 'loss';
+                        actualResult = 'loss';
+                        aiScore++;
+                    }
                 } else {
                     result = 'draw';
+                    actualResult = 'draw';
                 }
-                matchup.result = result;
+                matchup.result = actualResult;
                 
                 const board = document.getElementById(`user-attr-${i}`).closest('.board');
                 let resultDiv = board.querySelector('.board-result');
@@ -2041,9 +2379,23 @@
                     resultDiv.className = 'board-result';
                     board.appendChild(resultDiv);
                 }
-                resultDiv.className = `board-result ${result}`;
-                resultDiv.textContent = result.toUpperCase();
+                resultDiv.className = `board-result ${result}${matchup.isRivalry ? ' rivalry' : ''}`;
+                
+                let resultText = result.toUpperCase();
+                if (matchup.isRivalry) {
+                    resultText = (rivalryMod > 0 ? '+' : '-') + '1 ' + resultText;
+                }
+                if (matchup.isSpearhead) {
+                    resultText = '🔥 ' + resultText;
+                }
+                if (result === 'draw' && anchorTriggered && matchup.isAnchor) {
+                    resultText = '⚓ ANCHOR SAVED';
+                }
+                resultDiv.textContent = resultText;
             }
+            
+            // Update last opponents
+            gameState.lastOpponents = currentOpponents;
             
             for (let i = 0; i < 4; i++) {
                 document.getElementById(`user-attr-${i}`).disabled = true;
@@ -2058,16 +2410,16 @@
             
             if (gameState.moraleBoost) {
                 gameState.moraleBoost = false;
-                saveGameState();
             }
             
-            processMatchResult(matchWon, userScore, aiScore, pointsEarned);
+            processMatchResult(matchWon, userScore, aiScore, pointsEarned, anchorTriggered, anchorBonusGiven);
         }
 
-        function processMatchResult(won, userScore, aiScore, pointsEarned) {
+        function processMatchResult(won, userScore, aiScore, pointsEarned, anchorTriggered, anchorBonusGiven) {
             let promotionMsg = '';
             let seasonEnded = false;
             let justUnlocked = false;
+            let risingStarMsg = '';
             
             // Update streak
             if (won) {
@@ -2107,11 +2459,37 @@
                 gameState.points += pointsEarned;
                 gameState.totalPointsEarned += pointsEarned;
                 
+                // Track player wins for Rising Star qualification
+                gameState.formation.forEach((teamIdx, boardIdx) => {
+                    const player = gameState.userTeam[teamIdx];
+                    const matchup = gameState.matchups[boardIdx];
+                    
+                    if (matchup.result === 'win') {
+                        if (!gameState.playerWins[player.name]) {
+                            gameState.playerWins[player.name] = 0;
+                        }
+                        gameState.playerWins[player.name]++;
+                        
+                        // Check for Rising Star (all stats under 8, 3 wins)
+                        const isRisingStar = gameState.risingStars.includes(teamIdx);
+                        if (!isRisingStar && player.attack < 8 && player.defense < 8 && player.positional < 8) {
+                            if (gameState.playerWins[player.name] >= 3) {
+                                gameState.risingStars.push(teamIdx);
+                                risingStarMsg = `${player.name} is now a Rising Star! (+2 growth rate)`;
+                            }
+                        }
+                    }
+                });
+                
+                // Training with Rising Star bonus
                 let weakestPlayer = null;
                 let weakestAttr = null;
                 let lowestVal = 16;
                 
-                gameState.userTeam.forEach(p => {
+                gameState.userTeam.forEach((p, idx) => {
+                    const isRisingStar = gameState.risingStars.includes(idx);
+                    const growthBonus = isRisingStar ? 2 : 1;
+                    
                     ['attack', 'defense', 'positional'].forEach(attr => {
                         if (p[attr] < lowestVal) {
                             lowestVal = p[attr];
@@ -2122,18 +2500,20 @@
                 });
                 
                 if (weakestPlayer && weakestAttr && weakestPlayer[weakestAttr] < STAT_CAP) {
-                    weakestPlayer[weakestAttr]++;
-                    promotionMsg = `${weakestPlayer.name} +1 ${weakestAttr}`;
+                    const playerIdx = gameState.userTeam.indexOf(weakestPlayer);
+                    const isRisingStar = gameState.risingStars.includes(playerIdx);
+                    const growthAmount = isRisingStar ? 2 : 1;
+                    weakestPlayer[weakestAttr] = Math.min(STAT_CAP, weakestPlayer[weakestAttr] + growthAmount);
+                    promotionMsg = `${weakestPlayer.name} +${growthAmount} ${weakestAttr}${isRisingStar ? ' (Rising Star bonus!)' : ''}`;
                 }
                 
                 gameState.wins++;
                 gameState.squadWins++;
                 gameState.matchesPlayed++;
                 
-                // Check if squad just unlocked (reached 5 wins)
                 if (gameState.squadWins === 5 && gameState.squadLocked) {
                     justUnlocked = true;
-                    gameState.swapTokens = 2; // Give 2 swap tokens
+                    gameState.swapTokens = 2;
                 }
                 
                 if (gameState.wins % 3 === 0 && gameState.currentLeague < LEAGUES.length - 1) {
@@ -2154,11 +2534,11 @@
             saveGameState();
             
             setTimeout(() => {
-                showResults(won, userScore, aiScore, pointsEarned, promotionMsg, seasonEnded, justUnlocked);
+                showResults(won, userScore, aiScore, pointsEarned, promotionMsg, seasonEnded, justUnlocked, anchorTriggered, anchorBonusGiven, risingStarMsg);
             }, 1000);
         }
 
-        function showResults(won, userScore, aiScore, pointsEarned, promotionMsg, seasonEnded, justUnlocked) {
+        function showResults(won, userScore, aiScore, pointsEarned, promotionMsg, seasonEnded, justUnlocked, anchorTriggered, anchorBonusGiven, risingStarMsg) {
             showScreen('result-screen');
             
             document.getElementById('final-score').innerHTML = 
@@ -2174,6 +2554,16 @@
                 const div = document.createElement('div');
                 div.className = 'promotion-notice';
                 div.innerHTML = `+${pointsEarned} Points${promotionMsg ? '<br>' + promotionMsg : ''}`;
+                changesDiv.appendChild(div);
+            }
+            
+            if (risingStarMsg) {
+                const div = document.createElement('div');
+                div.className = 'promotion-notice';
+                div.style.background = '#2a2a20';
+                div.style.borderColor = '#5a5040';
+                div.style.color = '#c7b55b';
+                div.innerHTML = `★ ${risingStarMsg}`;
                 changesDiv.appendChild(div);
             }
             
@@ -2197,6 +2587,16 @@
                 div.className = 'promotion-notice';
                 div.innerHTML = `Squad unlocked! You have ${gameState.swapTokens} swap token${gameState.swapTokens !== 1 ? 's' : ''} remaining.`;
                 leagueDiv.appendChild(div);
+            }
+            
+            const anchorDiv = document.getElementById('anchor-display');
+            anchorDiv.innerHTML = '';
+            
+            if (anchorTriggered) {
+                const div = document.createElement('div');
+                div.className = 'anchor-triggered';
+                div.innerHTML = `<strong>⚓ Anchor Activated!</strong><br>Loss converted to draw${anchorBonusGiven ? ' and random teammate gained +1 Defense' : ''}`;
+                anchorDiv.appendChild(div);
             }
             
             const seasonDiv = document.getElementById('season-end-display');
@@ -2224,20 +2624,6 @@
             return { chance: 0.50, label: 'Very High Risk (50%)' };
         }
 
-        function attemptTraining(cost, successCallback, failureCallback) {
-            gameState.points -= cost;
-            
-            // Roll for success
-            const roll = Math.random();
-            // Base success rate depends on training type, modified by stat levels
-            
-            if (roll > 0) { // Always succeed for now, risk shown in UI
-                successCallback();
-            } else {
-                failureCallback();
-            }
-        }
-
         function showTrainingResult(success, message) {
             const modal = document.getElementById('train-result-modal');
             const content = document.getElementById('train-result-content');
@@ -2260,7 +2646,6 @@
             showScreen('training-screen');
             document.getElementById('training-points').textContent = gameState.points;
             
-            // Calculate risks for individual training
             let maxAttack = 0, maxDefense = 0, maxPositional = 0;
             gameState.userTeam.forEach(p => {
                 maxAttack = Math.max(maxAttack, p.attack);
@@ -2276,20 +2661,17 @@
             document.getElementById('risk-defense').textContent = `Risk: ${defenseRisk.label}`;
             document.getElementById('risk-positional').textContent = `Risk: ${positionalRisk.label}`;
             
-            // Individual Training (2 points each)
             document.getElementById('train-attack').className = 'training-option' + (gameState.points < 2 ? ' disabled' : '');
             document.getElementById('train-defense').className = 'training-option' + (gameState.points < 2 ? ' disabled' : '');
             document.getElementById('train-positional').className = 'training-option' + (gameState.points < 2 ? ' disabled' : '');
             
-            // Elite Training
             document.getElementById('train-master').className = 'training-option' + (gameState.points < 5 ? ' disabled' : '');
             document.getElementById('train-specialist').className = 'training-option' + (gameState.points < 4 ? ' disabled' : '');
             document.getElementById('train-team').className = 'training-option' + (gameState.points < 6 ? ' disabled' : '');
             
-            // Support
+            document.getElementById('train-cross').className = 'training-option' + (gameState.points < 4 ? ' disabled' : '');
             document.getElementById('train-scout').className = 'training-option' + (gameState.points < 3 ? ' disabled' : '');
             document.getElementById('train-intel').className = 'training-option' + (gameState.points < 4 ? ' disabled' : '');
-            document.getElementById('train-morale').className = 'training-option' + (gameState.points < 3 ? ' disabled' : '');
         }
 
         function trainSpecific(attr) {
@@ -2302,7 +2684,7 @@
             container.innerHTML = '';
             
             gameState.userTeam.forEach((p, idx) => {
-                if (p[attr] >= STAT_CAP) return; // Skip if at cap
+                if (p[attr] >= STAT_CAP) return;
                 
                 const risk = getTrainingRisk(p[attr]);
                 const btn = document.createElement('button');
@@ -2314,14 +2696,12 @@
                 btn.onclick = () => {
                     const roll = Math.random();
                     if (roll > risk.chance) {
-                        // Success
                         gameState.points -= costs[attr];
                         gameState.userTeam[idx][attr]++;
                         saveGameState();
                         closeTrainModal();
                         showTrainingResult(true, `${p.name} gained +1 ${attr}!`);
                     } else {
-                        // Failure
                         gameState.points -= costs[attr];
                         saveGameState();
                         closeTrainModal();
@@ -2467,6 +2847,57 @@
             modal.style.display = 'flex';
         }
 
+        // Cross-Training: Swap two stats on one player
+        function showCrossTraining() {
+            if (gameState.points < 4) return;
+            
+            const modal = document.getElementById('cross-train-modal');
+            const container = document.getElementById('cross-train-players');
+            container.innerHTML = '';
+            
+            gameState.userTeam.forEach((p, idx) => {
+                // Show all possible swaps for this player
+                const swaps = [
+                    {from: 'attack', to: 'defense', fromVal: p.attack, toVal: p.defense},
+                    {from: 'attack', to: 'positional', fromVal: p.attack, toVal: p.positional},
+                    {from: 'defense', to: 'attack', fromVal: p.defense, toVal: p.attack},
+                    {from: 'defense', to: 'positional', fromVal: p.defense, toVal: p.positional},
+                    {from: 'positional', to: 'attack', fromVal: p.positional, toVal: p.attack},
+                    {from: 'positional', to: 'defense', fromVal: p.positional, toVal: p.defense}
+                ];
+                
+                swaps.forEach(swap => {
+                    const div = document.createElement('div');
+                    div.className = 'cross-train-option';
+                    div.innerHTML = `
+                        <h4>${p.name}</h4>
+                        <div>Swap ${swap.from.toUpperCase()} (${swap.fromVal}) with ${swap.to.toUpperCase()} (${swap.toVal})</div>
+                        <div class="swap-arrow">↓</div>
+                        <div>New stats: A:${swap.from === 'attack' ? swap.toVal : (swap.to === 'attack' ? swap.fromVal : p.attack)} 
+                        D:${swap.from === 'defense' ? swap.toVal : (swap.to === 'defense' ? swap.fromVal : p.defense)} 
+                        P:${swap.from === 'positional' ? swap.toVal : (swap.to === 'positional' ? swap.fromVal : p.positional)}</div>
+                    `;
+                    div.onclick = () => {
+                        gameState.points -= 4;
+                        // Perform swap
+                        const temp = gameState.userTeam[idx][swap.from];
+                        gameState.userTeam[idx][swap.from] = gameState.userTeam[idx][swap.to];
+                        gameState.userTeam[idx][swap.to] = temp;
+                        saveGameState();
+                        closeCrossTrainModal();
+                        showTrainingResult(true, `${p.name} cross-trained: ${swap.from} and ${swap.to} swapped!`);
+                    };
+                    container.appendChild(div);
+                });
+            });
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeCrossTrainModal() {
+            document.getElementById('cross-train-modal').style.display = 'none';
+        }
+
         function buyScout() {
             if (gameState.points < 3) return;
             gameState.points -= 3;
@@ -2479,14 +2910,6 @@
             if (gameState.points < 4) return;
             gameState.points -= 4;
             gameState.fullIntel = true;
-            saveGameState();
-            showTrainingCamp();
-        }
-
-        function boostMorale() {
-            if (gameState.points < 3) return;
-            gameState.points -= 3;
-            gameState.moraleBoost = true;
             saveGameState();
             showTrainingCamp();
         }
@@ -2505,7 +2928,6 @@
             document.getElementById('swap-current-stats').innerHTML = 
                 `A:${currentPlayer.attack} D:${currentPlayer.defense} P:${currentPlayer.positional}`;
             
-            // Generate 3 random options from playerPool (excluding current team)
             const availablePool = playerPool.filter(p => 
                 !gameState.userTeam.some(teamP => teamP.name === p.name)
             );
@@ -2527,7 +2949,6 @@
         function confirmSwap(newPlayer) {
             if (currentSwapIndex === null || gameState.swapTokens <= 0) return;
             
-            // Replace player
             gameState.userTeam[currentSwapIndex] = {...newPlayer};
             gameState.swapTokens--;
             gameState.swappedPlayers.push({
@@ -2537,7 +2958,7 @@
             
             saveGameState();
             closeSwapModal();
-            viewSquad(); // Refresh squad view
+            viewSquad();
         }
 
         function closeSwapModal() {
@@ -2581,30 +3002,31 @@
             gameState.userTeam.forEach((p, idx) => {
                 const div = document.createElement('div');
                 
-                // Determine if player can be swapped
                 const canSwap = winsNeeded === 0 && gameState.swapTokens > 0;
+                const isRisingStar = gameState.risingStars.includes(idx);
                 
                 div.className = 'player-detail';
+                if (isRisingStar) div.classList.add('rising-star');
                 if (canSwap) {
-                    div.className += ' swappable';
+                    div.classList.add('swappable');
                     div.onclick = () => openSwapModal(idx);
                 } else {
-                    div.className += ' locked';
+                    div.classList.add('locked');
                 }
                 
                 div.innerHTML = `
-                    <div class="name">${p.name}</div>
+                    <div class="name">${p.name}${isRisingStar ? ' ★' : ''}</div>
                     <div class="stat">
                         <span class="stat-label">Attack</span>
-                        <span class="stat-value ${p.attack >= 10 ? 'capped' : ''}">${p.attack}</span>
+                        <span class="stat-value ${p.attack >= 10 ? 'capped' : ''} ${p.attack <= 5 ? 'low' : ''}">${p.attack}</span>
                     </div>
                     <div class="stat">
                         <span class="stat-label">Defense</span>
-                        <span class="stat-value ${p.defense >= 10 ? 'capped' : ''}">${p.defense}</span>
+                        <span class="stat-value ${p.defense >= 10 ? 'capped' : ''} ${p.defense <= 5 ? 'low' : ''}">${p.defense}</span>
                     </div>
                     <div class="stat">
                         <span class="stat-label">Positional</span>
-                        <span class="stat-value ${p.positional >= 10 ? 'capped' : ''}">${p.positional}</span>
+                        <span class="stat-value ${p.positional >= 10 ? 'capped' : ''} ${p.positional <= 5 ? 'low' : ''}">${p.positional}</span>
                     </div>
                 `;
                 container.appendChild(div);
@@ -2637,6 +3059,8 @@
             gameState.squadWins = 0;
             gameState.swapTokens = 0;
             gameState.swappedPlayers = [];
+            gameState.risingStars = [];
+            gameState.playerWins = {};
             
             document.getElementById('current-identity').textContent = identity;
             
@@ -2682,15 +3106,15 @@
                 <h4>${player.name}</h4>
                 <div class="stat-row">
                     <span class="stat-label">Attack</span>
-                    <span class="stat-value ${player.attack >= 8 ? 'high' : ''}">${player.attack}</span>
+                    <span class="stat-value ${player.attack >= 8 ? 'high' : ''} ${player.attack <= 5 ? 'low' : ''}">${player.attack}</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">Defense</span>
-                    <span class="stat-value ${player.defense >= 8 ? 'high' : ''}">${player.defense}</span>
+                    <span class="stat-value ${player.defense >= 8 ? 'high' : ''} ${player.defense <= 5 ? 'low' : ''}">${player.defense}</span>
                 </div>
                 <div class="stat-row">
                     <span class="stat-label">Positional</span>
-                    <span class="stat-value ${player.positional >= 8 ? 'high' : ''}">${player.positional}</span>
+                    <span class="stat-value ${player.positional >= 8 ? 'high' : ''} ${player.positional <= 5 ? 'low' : ''}">${player.positional}</span>
                 </div>
             `;
             return div;
@@ -2744,24 +3168,17 @@
             let pool = [...playerPool];
             let team = [];
             
-            // Generate 4 players with stats around target average
             for (let i = 0; i < 4; i++) {
-                // Pick base player
                 const basePlayer = pool[Math.floor(Math.random() * pool.length)];
                 pool = pool.filter(p => p.name !== basePlayer.name);
                 
-                // Create modified copy with scaled stats
                 const player = {...basePlayer};
                 
-                // Scale each stat toward target average with variance
                 ['attack', 'defense', 'positional'].forEach(attr => {
                     const target = difficulty.targetAvg + (Math.random() * difficulty.variance * 2 - difficulty.variance);
                     const current = player[attr];
-                    // Blend current with target
                     let newVal = Math.round((current + target) / 2);
-                    // Add some randomness
                     newVal += Math.floor(Math.random() * 3) - 1;
-                    // Clamp
                     newVal = Math.max(difficulty.minStat, Math.min(difficulty.maxStat, newVal));
                     player[attr] = newVal;
                 });
