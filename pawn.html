@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy Pawns League - Pawn Mode</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0d1f0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #4ade80;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 24px;
+            color: #86efac;
+        }
+
+        h3 {
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            color: #65a34d;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            font-size: 13px;
+            color: #4a7c3b;
+        }
+
+        .header-stats span {
+            color: #4ade80;
+            font-weight: 500;
+        }
+
+        .league-badge {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #1a2e17;
+            border: 1px solid #2d5a23;
+        }
+
+        .league-name {
+            font-size: 24px;
+            font-weight: 300;
+            color: #4ade80;
+            margin-bottom: 8px;
+        }
+
+        .league-record {
+            font-size: 14px;
+            color: #65a34d;
+        }
+
+        .pawn-mode-badge {
+            display: inline-block;
+            background: #16a34a;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 8px 0;
+            letter-spacing: 1px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .menu-btn {
+            padding: 24px;
+            background: #1a2e17;
+            border: 1px solid #2d5a23;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .menu-btn:hover {
+            border-color: #4ade80;
+            background: #244620;
+        }
+
+        .menu-btn h3 {
+            color: #4ade80;
+        }
+
+        .menu-btn p {
+            font-size: 12px;
+            color: #65a34d;
+        }
+
+        .menu-btn.danger {
+            border-color: #6a4040;
+        }
+
+        .menu-btn.danger:hover {
+            background: #3a2020;
+            border-color: #d87171;
+        }
+
+        .menu-btn.danger h3 {
+            color: #d87171;
+        }
+
+        .identity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .identity-card {
+            padding: 20px;
+            background: #1a2e17;
+            border: 2px solid #2d5a23;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .identity-card:hover {
+            border-color: #4ade80;
+            background: #244620;
+        }
+
+        .identity-card.selected {
+            border-color: #4ade80;
+            background: #245231;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .stat-display {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 12px;
+            font-size: 12px;
+        }
+
+        .stat-display div {
+            color: #86efac;
+        }
+
+        .stat-display span {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .player-card {
+            padding: 20px;
+            background: #1a2e17;
+            border: 1px solid #2d5a23;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .player-card:hover {
+            border-color: #4ade80;
+            background: #244620;
+        }
+
+        .player-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4ade80;
+            margin-bottom: 10px;
+        }
+
+        .player-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #86efac;
+        }
+
+        .player-stat-value {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .team-slots {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .slot {
+            padding: 16px;
+            background: #1a2e17;
+            border: 2px dashed #2d5a23;
+            text-align: center;
+            color: #65a34d;
+        }
+
+        .slot.filled {
+            border: 2px solid #4ade80;
+            background: #244620;
+        }
+
+        .slot-player {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 30px 0;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: #16a34a;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background: #15803d;
+        }
+
+        .back-btn {
+            background: #2d5a23;
+            color: #4ade80;
+            border: 1px solid #4ade80;
+        }
+
+        .back-btn:hover {
+            background: #3d7a33;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a2e17;
+            padding: 30px;
+            border: 1px solid #2d5a23;
+            max-width: 500px;
+            border-radius: 4px;
+        }
+
+        .modal-content h3 {
+            color: #4ade80;
+            margin-bottom: 16px;
+        }
+
+        .modal-content p {
+            color: #86efac;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            padding: 20px;
+            background: #1a2e17;
+            border: 1px solid #2d5a23;
+            text-align: center;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 600;
+            color: #4ade80;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: #65a34d;
+            text-transform: uppercase;
+        }
+
+        .formation-slots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .formation-slot {
+            padding: 20px;
+            background: #1a2e17;
+            border: 2px dashed #2d5a23;
+            text-align: center;
+            cursor: move;
+        }
+
+        .formation-slot.filled {
+            border: 2px solid #4ade80;
+            background: #244620;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #1a2e17;
+            border: 1px solid #2d5a23;
+        }
+
+        .board-player {
+            text-align: center;
+            padding: 16px;
+        }
+
+        .board-player-name {
+            font-size: 14px;
+            color: #4ade80;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .board-stat {
+            padding: 8px;
+            margin: 4px 0;
+            background: #244620;
+            border: 1px solid #2d5a23;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #86efac;
+        }
+
+        .board-stat:hover {
+            background: #3a6a2e;
+            border-color: #4ade80;
+        }
+
+        .board-stat.selected {
+            background: #16a34a;
+            border-color: #4ade80;
+            color: #fff;
+        }
+
+        .result {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .result.win {
+            background: #16a34a;
+            color: #fff;
+        }
+
+        .result.loss {
+            background: #6a4040;
+            color: #d87171;
+        }
+
+        .result.draw {
+            background: #2d5a23;
+            color: #86efac;
+        }
+
+        .training-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .training-option {
+            padding: 20px;
+            background: #1a2e17;
+            border: 1px solid #2d5a23;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .training-option:hover {
+            border-color: #4ade80;
+            background: #244620;
+        }
+
+        .training-option h3 {
+            color: #4ade80;
+        }
+
+        .training-info {
+            font-size: 12px;
+            color: #65a34d;
+            margin: 8px 0;
+        }
+
+        .training-info span {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .match-result-screen {
+            text-align: center;
+        }
+
+        .match-result-screen h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .match-result-screen.win h2 {
+            color: #4ade80;
+        }
+
+        .match-result-screen.loss h2 {
+            color: #d87171;
+        }
+
+        .match-result-screen.draw h2 {
+            color: #86efac;
+        }
+
+        .match-details {
+            margin: 20px 0;
+            padding: 20px;
+            background: #1a2e17;
+            border: 1px solid #2d5a23;
+        }
+
+        @media (max-width: 768px) {
+            .menu-grid,
+            .identity-grid,
+            .player-grid,
+            .team-slots,
+            .stats-grid,
+            .formation-slots,
+            .training-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .board {
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fantasy Pawns League</h1>
+        <div style="text-align: center; margin-bottom: 40px;">
+            <div class="pawn-mode-badge">PAWN MODE - EASY</div>
+        </div>
+
+        <!-- Menu Screen -->
+        <div id="menu-screen" class="screen active">
+            <div class="header-stats">
+                <div>Points: <span id="points-display">0</span></div>
+                <div>Record: <span id="wins">0</span>W - <span id="draws">0</span>D - <span id="losses">0</span>L</div>
+            </div>
+
+            <div class="league-badge">
+                <div class="league-name" id="current-league">Pawns League</div>
+                <div class="league-record">
+                    Season: <span id="season-matches">0</span>/10
+                </div>
+            </div>
+
+            <div class="menu-grid">
+                <div class="menu-btn" onclick="startMatchFlow()">
+                    <h3>Start Match</h3>
+                    <p>Easy wins</p>
+                </div>
+                <div class="menu-btn" onclick="viewSquad()">
+                    <h3>View Squad</h3>
+                    <p>Your team</p>
+                </div>
+                <div class="menu-btn" onclick="showStats()">
+                    <h3>Stats</h3>
+                    <p>Your career</p>
+                </div>
+                <div class="menu-btn" onclick="showTrainingCamp()">
+                    <h3>Training</h3>
+                    <p>Boost players</p>
+                </div>
+                <div class="menu-btn" onclick="showTutorial()">
+                    <h3>How to Play</h3>
+                    <p>Guide</p>
+                </div>
+                <div class="menu-btn danger" onclick="confirmResign()">
+                    <h3>Resign</h3>
+                    <p>Reset all</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Identity Selection Screen -->
+        <div id="identity-screen" class="screen">
+            <h2 style="text-align: center;">Choose Your Identity</h2>
+            <p style="text-align: center; color: #65a34d; margin-bottom: 30px;">Select your team's core attribute</p>
+
+            <div class="identity-grid">
+                <div class="identity-card" onclick="selectIdentity('attack')">
+                    <h3>⚔️ Attack</h3>
+                    <p style="color: #65a34d; font-size: 12px;">Offensive focus</p>
+                    <div class="stat-display">
+                        <div>ATK: <span>10</span></div>
+                    </div>
+                </div>
+                <div class="identity-card" onclick="selectIdentity('defense')">
+                    <h3>🛡️ Defense</h3>
+                    <p style="color: #65a34d; font-size: 12px;">Defensive focus</p>
+                    <div class="stat-display">
+                        <div>DEF: <span>10</span></div>
+                    </div>
+                </div>
+                <div class="identity-card" onclick="selectIdentity('positional')">
+                    <h3>♟️ Positional</h3>
+                    <p style="color: #65a34d; font-size: 12px;">Control focus</p>
+                    <div class="stat-display">
+                        <div>POS: <span>10</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Draft Screen -->
+        <div id="draft-screen" class="screen">
+            <h2 style="text-align: center;">Build Your Squad</h2>
+            <p style="text-align: center; color: #65a34d; margin-bottom: 20px;" id="draft-instructions">Select your 2 core players</p>
+
+            <div class="player-grid" id="player-options"></div>
+
+            <div style="text-align: center;">
+                <div class="team-slots" id="team-slots"></div>
+                <button id="draft-btn" onclick="proceedDraft()" style="display: none;">Proceed to Match</button>
+            </div>
+        </div>
+
+        <!-- Formation Screen -->
+        <div id="formation-screen" class="screen">
+            <h2 style="text-align: center;">Set Your Formation</h2>
+            <p style="text-align: center; color: #65a34d; margin-bottom: 20px;">Drag players to arrange your match order</p>
+
+            <div class="formation-slots" id="formation-slots"></div>
+
+            <div style="text-align: center;">
+                <button onclick="startMatch()">Start Match</button>
+                <button class="back-btn" onclick="showScreen('menu-screen')">Back</button>
+            </div>
+        </div>
+
+        <!-- Match Screen -->
+        <div id="match-screen" class="screen">
+            <h2 style="text-align: center;">Match Time!</h2>
+            <p style="text-align: center; color: #65a34d; margin-bottom: 20px;">Select your attribute for each position</p>
+
+            <div id="match-boards"></div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="completeMatch()">Complete Match</button>
+                <button class="back-btn" onclick="showScreen('formation-screen')">Back</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="match-result-screen" id="result-content"></div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="showScreen('menu-screen')">Back to Menu</button>
+            </div>
+        </div>
+
+        <!-- Stats Screen -->
+        <div id="stats-screen" class="screen">
+            <h2 style="text-align: center;">Career Statistics</h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="value" id="stat-matches">0</div>
+                    <div class="label">Matches Played</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="stat-winrate">0%</div>
+                    <div class="label">Win Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="stat-points">0</div>
+                    <div class="label">Total Points</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="back-btn" onclick="showScreen('menu-screen')">Back to Menu</button>
+            </div>
+        </div>
+
+        <!-- Squad Screen -->
+        <div id="squad-screen" class="screen">
+            <h2 style="text-align: center;">Your Squad</h2>
+
+            <div class="player-grid" id="squad-display"></div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="back-btn" onclick="showScreen('menu-screen')">Back to Menu</button>
+            </div>
+        </div>
+
+        <!-- Training Screen -->
+        <div id="training-screen" class="screen">
+            <h2 style="text-align: center;">Training Camp</h2>
+            <div style="text-align: center; margin-bottom: 20px; color: #65a34d;">
+                <p>Points Available: <span id="training-points" style="color: #4ade80; font-weight: 600;">0</span></p>
+                <p style="font-size: 12px; color: #65a34d;">No risk! All training always succeeds in Pawn Mode.</p>
+            </div>
+
+            <div class="training-grid" id="training-options"></div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="back-btn" onclick="showScreen('menu-screen')">Back to Menu</button>
+            </div>
+        </div>
+
+        <!-- Tutorial Screen -->
+        <div id="tutorial-screen" class="screen">
+            <h2 style="text-align: center;">How to Play - Pawn Mode</h2>
+
+            <div style="max-width: 600px; margin: 30px auto; color: #86efac; line-height: 1.8;">
+                <h3 style="color: #4ade80; margin: 20px 0 10px 0;">🎮 Game Basics</h3>
+                <p>Pawn Mode is the easy difficulty. Every player on your team gets +2 to all attributes, and every opponent gets -1 to all attributes. Plus, you earn 2x the training points!</p>
+
+                <h3 style="color: #4ade80; margin: 20px 0 10px 0;">⚔️ Start Your Team</h3>
+                <p>Choose your identity (Attack, Defense, or Positional). Your 2 core players are guaranteed to have a 10 in that attribute. Pick 2 additional players with at least a 9 in your chosen attribute.</p>
+
+                <h3 style="color: #4ade80; margin: 20px 0 10px 0;">📋 Matches</h3>
+                <p>Arrange your 4 players in formation, then select an attribute for each matchup. Your attribute is compared to the opponent's. Higher wins, ties draw. Winning gives you training points.</p>
+
+                <h3 style="color: #4ade80; margin: 20px 0 10px 0;">🏋️ Training</h3>
+                <p>No risk! All training always succeeds. Spend points to boost your players. After 10 matches, rebuild your squad with new players.</p>
+
+                <h3 style="color: #4ade80; margin: 20px 0 10px 0;">📊 Progression</h3>
+                <p>Complete seasons and climb the ranks. Your stats track all your achievements.</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="back-btn" onclick="showScreen('menu-screen')">Back to Menu</button>
+            </div>
+        </div>
+
+        <!-- Resign Modal -->
+        <div id="resign-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h3>Resign from League?</h3>
+                <p>This will permanently delete your squad, points, and all progress. This cannot be undone.</p>
+                <div class="modal-buttons">
+                    <button class="back-btn" onclick="closeResignModal()">Cancel</button>
+                    <button class="back-btn" style="border-color: #6a4040; color: #d87171;" onclick="executeResign()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SAVE_KEY = 'fpl_pawn_save_v1';
+        const STAT_CAP = 15;
+        const PAWN_BONUS = 2;
+        const OPPONENT_PENALTY = 1;
+        const POINT_MULTIPLIER = 2;
+
+        const PLAYER_POOL = [
+            { name: 'Bella', attack: 8, defense: 5, positional: 6 },
+            { name: 'Magnus', attack: 6, defense: 8, positional: 5 },
+            { name: 'Luna', attack: 7, defense: 6, positional: 8 },
+            { name: 'Atlas', attack: 9, defense: 7, positional: 6 },
+            { name: 'Sage', attack: 5, defense: 9, positional: 7 },
+            { name: 'Echo', attack: 7, defense: 7, positional: 7 },
+            { name: 'Zephyr', attack: 8, defense: 6, positional: 7 },
+            { name: 'Ivory', attack: 6, defense: 7, positional: 8 },
+            { name: 'Storm', attack: 9, defense: 8, positional: 5 },
+            { name: 'Vesper', attack: 6, defense: 6, positional: 9 },
+            { name: 'Raven', attack: 7, defense: 8, positional: 6 },
+            { name: 'Pearl', attack: 5, defense: 8, positional: 7 },
+            { name: 'Slate', attack: 8, defense: 5, positional: 7 },
+            { name: 'Ember', attack: 7, defense: 6, positional: 8 },
+            { name: 'Onyx', attack: 9, defense: 6, positional: 6 }
+        ];
+
+        let gameState = {
+            userTeam: [],
+            identity: null,
+            wins: 0,
+            losses: 0,
+            draws: 0,
+            points: 0,
+            seasonMatches: 0,
+            currentFormation: [],
+            matchups: [],
+            selectedAttributes: []
+        };
+
+        function saveGame() {
+            localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem(SAVE_KEY);
+            if (saved) {
+                gameState = JSON.parse(saved);
+            } else {
+                startNewGame();
+            }
+            updateDisplay();
+        }
+
+        function startNewGame() {
+            gameState = {
+                userTeam: [],
+                identity: null,
+                wins: 0,
+                losses: 0,
+                draws: 0,
+                points: 0,
+                seasonMatches: 0,
+                currentFormation: [],
+                matchups: [],
+                selectedAttributes: []
+            };
+            showScreen('identity-screen');
+        }
+
+        function selectIdentity(identity) {
+            gameState.identity = identity;
+            document.querySelectorAll('.identity-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.identity-card').classList.add('selected');
+
+            setTimeout(() => {
+                showDraftScreen();
+            }, 300);
+        }
+
+        function showDraftScreen() {
+            gameState.userTeam = [];
+
+            const corePlayer1 = createCorePlayer(gameState.identity);
+            const corePlayer2 = createCorePlayer(gameState.identity);
+
+            const availablePlayers = PLAYER_POOL.filter(p =>
+                gameState.identity === 'attack' ? p.attack >= 9 :
+                gameState.identity === 'defense' ? p.defense >= 9 :
+                p.positional >= 9
+            );
+
+            const draftPool = [corePlayer1, corePlayer2, ...availablePlayers.slice(0, 8)];
+
+            let html = '';
+            draftPool.forEach((player, idx) => {
+                html += `
+                    <div class="player-card" onclick="selectPlayer(${idx})">
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-stats">
+                            <div>ATK: <span class="player-stat-value">${player.attack}</span></div>
+                            <div>DEF: <span class="player-stat-value">${player.defense}</span></div>
+                            <div>POS: <span class="player-stat-value">${player.positional}</span></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('player-options').innerHTML = html;
+            document.getElementById('draft-instructions').textContent =
+                gameState.userTeam.length < 4 ?
+                `Select player ${gameState.userTeam.length + 1} of 4` :
+                'Your squad is complete!';
+
+            updateTeamSlots();
+            showScreen('draft-screen');
+
+            window.draftPool = draftPool;
+        }
+
+        function createCorePlayer(identity) {
+            const base = PLAYER_POOL[Math.floor(Math.random() * PLAYER_POOL.length)];
+            const core = { ...base, isCorePlayer: true };
+
+            if (identity === 'attack') {
+                core.attack = 10;
+            } else if (identity === 'defense') {
+                core.defense = 10;
+            } else {
+                core.positional = 10;
+            }
+
+            return core;
+        }
+
+        function selectPlayer(idx) {
+            if (gameState.userTeam.length < 4) {
+                gameState.userTeam.push(window.draftPool[idx]);
+                updateTeamSlots();
+                document.getElementById('draft-instructions').textContent =
+                    gameState.userTeam.length < 4 ?
+                    `Select player ${gameState.userTeam.length + 1} of 4` :
+                    'Your squad is complete!';
+
+                if (gameState.userTeam.length === 4) {
+                    document.getElementById('draft-btn').style.display = 'block';
+                }
+            }
+        }
+
+        function updateTeamSlots() {
+            let html = '';
+            for (let i = 0; i < 4; i++) {
+                if (i < gameState.userTeam.length) {
+                    const p = gameState.userTeam[i];
+                    html += `
+                        <div class="slot filled">
+                            <div class="slot-player">${p.name}</div>
+                            <div style="font-size: 11px; color: #65a34d; margin-top: 4px;">
+                                ATK ${p.attack} | DEF ${p.defense} | POS ${p.positional}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html += `<div class="slot">Empty</div>`;
+                }
+            }
+            document.getElementById('team-slots').innerHTML = html;
+        }
+
+        function proceedDraft() {
+            saveGame();
+            showFormationScreen();
+        }
+
+        function showFormationScreen() {
+            let html = '';
+            gameState.userTeam.forEach((player, idx) => {
+                html += `
+                    <div class="formation-slot filled" draggable="true" ondragstart="dragStart(event, ${idx})" ondrop="drop(event, ${idx})" ondragover="allowDrop(event)">
+                        <div style="color: #4ade80; font-weight: 600;">${idx + 1}</div>
+                        <div style="color: #4ade80; font-size: 14px;">${player.name}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('formation-slots').innerHTML = html;
+            gameState.currentFormation = gameState.userTeam.map((_, i) => i);
+            showScreen('formation-screen');
+        }
+
+        function dragStart(e, idx) {
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', idx);
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function drop(e, toIdx) {
+            e.preventDefault();
+            const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+            if (fromIdx !== toIdx) {
+                [gameState.userTeam[fromIdx], gameState.userTeam[toIdx]] =
+                [gameState.userTeam[toIdx], gameState.userTeam[fromIdx]];
+                showFormationScreen();
+            }
+        }
+
+        function startMatch() {
+            gameState.matchups = [];
+            gameState.selectedAttributes = [null, null, null, null];
+            generateMatchup();
+            showScreen('match-screen');
+        }
+
+        function generateMatchup() {
+            const opponent = generateAITeam();
+            gameState.opponent = opponent;
+
+            let html = '';
+            for (let i = 0; i < 4; i++) {
+                const userPlayer = gameState.userTeam[i];
+                const opponentPlayer = opponent[i];
+
+                html += `
+                    <div class="board">
+                        <div class="board-player user">
+                            <div class="board-player-name">${userPlayer.name}</div>
+                            <div class="board-stat ${gameState.selectedAttributes[i] === 'attack' ? 'selected' : ''}" onclick="selectAttribute(${i}, 'attack')">
+                                ATK <span style="color: #4ade80;">${userPlayer.attack + PAWN_BONUS}</span>
+                            </div>
+                            <div class="board-stat ${gameState.selectedAttributes[i] === 'defense' ? 'selected' : ''}" onclick="selectAttribute(${i}, 'defense')">
+                                DEF <span style="color: #4ade80;">${userPlayer.defense + PAWN_BONUS}</span>
+                            </div>
+                            <div class="board-stat ${gameState.selectedAttributes[i] === 'positional' ? 'selected' : ''}" onclick="selectAttribute(${i}, 'positional')">
+                                POS <span style="color: #4ade80;">${userPlayer.positional + PAWN_BONUS}</span>
+                            </div>
+                        </div>
+                        <div class="board-player opponent">
+                            <div class="board-player-name">${opponentPlayer.name}</div>
+                            <div style="color: #65a34d; font-size: 12px;">Waiting for selection...</div>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('match-boards').innerHTML = html;
+        }
+
+        function selectAttribute(position, attribute) {
+            gameState.selectedAttributes[position] = attribute;
+            generateMatchup();
+        }
+
+        function completeMatch() {
+            if (gameState.selectedAttributes.includes(null)) {
+                alert('Please select an attribute for all positions');
+                return;
+            }
+
+            let userWins = 0;
+            let opponentWins = 0;
+            let draws = 0;
+            const results = [];
+
+            for (let i = 0; i < 4; i++) {
+                const attr = gameState.selectedAttributes[i];
+                const userVal = gameState.userTeam[i][attr] + PAWN_BONUS;
+                const oppVal = gameState.opponent[i][attr] - OPPONENT_PENALTY;
+
+                if (userVal > oppVal) {
+                    userWins++;
+                    results.push({ position: i, result: 'win' });
+                } else if (userVal < oppVal) {
+                    opponentWins++;
+                    results.push({ position: i, result: 'loss' });
+                } else {
+                    draws++;
+                    results.push({ position: i, result: 'draw' });
+                }
+            }
+
+            let matchResult = 'loss';
+            if (userWins > opponentWins) {
+                matchResult = 'win';
+                gameState.wins++;
+                gameState.points += 10 * POINT_MULTIPLIER;
+            } else if (userWins === opponentWins) {
+                matchResult = 'draw';
+                gameState.draws++;
+                gameState.points += 4 * POINT_MULTIPLIER;
+            } else {
+                gameState.losses++;
+                gameState.points += 2 * POINT_MULTIPLIER;
+            }
+
+            gameState.seasonMatches++;
+            saveGame();
+            showResults(matchResult, results);
+        }
+
+        function generateAITeam() {
+            return PLAYER_POOL.slice(0, 4).map(p => ({ ...p }));
+        }
+
+        function showResults(result, results) {
+            let className = result;
+            let title = result === 'win' ? '🎉 VICTORY!' : result === 'draw' ? '⚖️ DRAW' : '❌ DEFEAT';
+
+            let detailsHtml = `
+                <h2>${title}</h2>
+                <div class="match-details">
+                    <p style="font-size: 14px; margin: 10px 0;">Position Results:</p>
+            `;
+
+            results.forEach(r => {
+                const icon = r.result === 'win' ? '✓' : r.result === 'draw' ? '=' : '✗';
+                detailsHtml += `<div style="padding: 8px; color: #86efac; font-size: 12px;">${icon} Position ${r.position + 1}: ${r.result.toUpperCase()}</div>`;
+            });
+
+            detailsHtml += `
+                    <p style="font-size: 13px; margin-top: 12px; color: #4ade80;">
+                        +${result === 'win' ? 20 : result === 'draw' ? 8 : 4} Training Points
+                    </p>
+                </div>
+            `;
+
+            if (gameState.seasonMatches === 10) {
+                detailsHtml += `<p style="color: #4ade80; margin-top: 20px; font-weight: 600;">⭐ Season Complete! You must redraft.</p>`;
+            }
+
+            document.getElementById('result-content').innerHTML = `
+                <div class="match-result-screen ${className}">
+                    ${detailsHtml}
+                </div>
+            `;
+
+            showScreen('results-screen');
+        }
+
+        function showTrainingCamp() {
+            document.getElementById('training-points').textContent = gameState.points;
+
+            let html = `
+                <div class="training-option" onclick="trainSpecific()">
+                    <h3>Quick Boost</h3>
+                    <div class="training-info">Cost: <span>5</span> pts</div>
+                    <p style="font-size: 11px; color: #65a34d;">+1 to one attribute for one player</p>
+                </div>
+                <div class="training-option" onclick="trainMaster()">
+                    <h3>Master Class</h3>
+                    <div class="training-info">Cost: <span>10</span> pts</div>
+                    <p style="font-size: 11px; color: #65a34d;">+1 to all attributes for one player</p>
+                </div>
+                <div class="training-option" onclick="trainTeam()">
+                    <h3>Team Training</h3>
+                    <div class="training-info">Cost: <span>12</span> pts</div>
+                    <p style="font-size: 11px; color: #65a34d;">+1 to one attribute for all players</p>
+                </div>
+                <div class="training-option" onclick="trainAll()">
+                    <h3>Full Team Boost</h3>
+                    <div class="training-info">Cost: <span>20</span> pts</div>
+                    <p style="font-size: 11px; color: #65a34d;">+1 to all attributes for all players</p>
+                </div>
+            `;
+
+            document.getElementById('training-options').innerHTML = html;
+            showScreen('training-screen');
+        }
+
+        function trainSpecific() {
+            const attr = prompt('Which attribute? (attack/defense/positional)').toLowerCase();
+            const idx = prompt('Which player? (1-4)') - 1;
+
+            if (idx >= 0 && idx < 4 && ['attack', 'defense', 'positional'].includes(attr)) {
+                if (gameState.points >= 5) {
+                    gameState.points -= 5;
+                    gameState.userTeam[idx][attr] = Math.min(gameState.userTeam[idx][attr] + 1, STAT_CAP);
+                    saveGame();
+                    alert(`${gameState.userTeam[idx].name}'s ${attr} increased!`);
+                    showTrainingCamp();
+                }
+            }
+        }
+
+        function trainMaster() {
+            const idx = prompt('Which player? (1-4)') - 1;
+
+            if (idx >= 0 && idx < 4) {
+                if (gameState.points >= 10) {
+                    gameState.points -= 10;
+                    gameState.userTeam[idx].attack = Math.min(gameState.userTeam[idx].attack + 1, STAT_CAP);
+                    gameState.userTeam[idx].defense = Math.min(gameState.userTeam[idx].defense + 1, STAT_CAP);
+                    gameState.userTeam[idx].positional = Math.min(gameState.userTeam[idx].positional + 1, STAT_CAP);
+                    saveGame();
+                    alert(`${gameState.userTeam[idx].name} boosted across all stats!`);
+                    showTrainingCamp();
+                }
+            }
+        }
+
+        function trainTeam() {
+            const attr = prompt('Which attribute? (attack/defense/positional)').toLowerCase();
+
+            if (['attack', 'defense', 'positional'].includes(attr)) {
+                if (gameState.points >= 12) {
+                    gameState.points -= 12;
+                    gameState.userTeam.forEach(player => {
+                        player[attr] = Math.min(player[attr] + 1, STAT_CAP);
+                    });
+                    saveGame();
+                    alert(`All players' ${attr} increased!`);
+                    showTrainingCamp();
+                }
+            }
+        }
+
+        function trainAll() {
+            if (gameState.points >= 20) {
+                gameState.points -= 20;
+                gameState.userTeam.forEach(player => {
+                    player.attack = Math.min(player.attack + 1, STAT_CAP);
+                    player.defense = Math.min(player.defense + 1, STAT_CAP);
+                    player.positional = Math.min(player.positional + 1, STAT_CAP);
+                });
+                saveGame();
+                alert('All players boosted across all stats!');
+                showTrainingCamp();
+            }
+        }
+
+        function viewSquad() {
+            let html = '';
+            gameState.userTeam.forEach((player, idx) => {
+                html += `
+                    <div class="player-card">
+                        <div class="player-name">Player ${idx + 1} - ${player.name}</div>
+                        <div class="player-stats">
+                            <div>ATK: <span class="player-stat-value">${player.attack}</span></div>
+                            <div>DEF: <span class="player-stat-value">${player.defense}</span></div>
+                            <div>POS: <span class="player-stat-value">${player.positional}</span></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('squad-display').innerHTML = html;
+            showScreen('squad-screen');
+        }
+
+        function showStats() {
+            const totalMatches = gameState.wins + gameState.draws + gameState.losses;
+            const winRate = totalMatches > 0 ? ((gameState.wins / totalMatches) * 100).toFixed(1) : 0;
+
+            document.getElementById('stat-matches').textContent = totalMatches;
+            document.getElementById('stat-winrate').textContent = winRate + '%';
+            document.getElementById('stat-points').textContent = gameState.points;
+
+            showScreen('stats-screen');
+        }
+
+        function showTutorial() {
+            showScreen('tutorial-screen');
+        }
+
+        function confirmResign() {
+            document.getElementById('resign-modal').classList.add('active');
+        }
+
+        function closeResignModal() {
+            document.getElementById('resign-modal').classList.remove('active');
+        }
+
+        function executeResign() {
+            localStorage.removeItem(SAVE_KEY);
+            gameState = { userTeam: [], identity: null, wins: 0, losses: 0, draws: 0, points: 0, seasonMatches: 0, currentFormation: [], matchups: [], selectedAttributes: [] };
+            closeResignModal();
+            startNewGame();
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            document.getElementById('wins').textContent = gameState.wins;
+            document.getElementById('draws').textContent = gameState.draws;
+            document.getElementById('losses').textContent = gameState.losses;
+            document.getElementById('points-display').textContent = gameState.points;
+            document.getElementById('season-matches').textContent = gameState.seasonMatches;
+            document.getElementById('current-league').textContent = gameState.identity
+                ? `${gameState.identity.toUpperCase()} Identity`
+                : 'Pawns League';
+        }
+
+        window.addEventListener('load', loadGame);
+    </script>
+</body>
+</html>
