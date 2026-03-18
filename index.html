@@ -1206,6 +1206,209 @@
             margin: 8px 0;
         }
 
+        /* MOD SYSTEM STYLES */
+        /* VM - Swag1: Rainbow borders */
+        .mod-swag1 .menu-btn,
+        .mod-swag1 .formation-slot,
+        .mod-swag1 .player-card,
+        .mod-swag1 .training-option,
+        .mod-swag1 .stat-card,
+        .mod-swag1 .player-detail,
+        .mod-swag1 .board,
+        .mod-swag1 .history-item,
+        .mod-swag1 .team-slot,
+        .mod-swag1 .identity-btn,
+        .mod-swag1 .league-badge,
+        .mod-swag1 .current-team,
+        .mod-swag1 .selection-area,
+        .mod-swag1 .squad-display,
+        .mod-swag1 .match-setup,
+        .mod-swag1 .stats-container,
+        .mod-swag1 .tutorial-content,
+        .mod-swag1 .scout-panel,
+        .mod-swag1 .formation-area,
+        .mod-swag1 .modal-content,
+        .mod-swag1 .swap-modal-content,
+        .mod-swag1 .cross-train-option {
+            animation: rainbow-border 2s linear infinite;
+        }
+
+        @keyframes rainbow-border {
+            0% { border-color: #ff0000; }
+            16.66% { border-color: #ff8800; }
+            33.33% { border-color: #ffff00; }
+            50% { border-color: #00ff00; }
+            66.66% { border-color: #0088ff; }
+            83.33% { border-color: #8800ff; }
+            100% { border-color: #ff0000; }
+        }
+
+        /* VM - Revamp: Glassmorphism + gradients */
+        .mod-revamp {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        .mod-revamp .container {
+            max-width: 1000px;
+        }
+
+        .mod-revamp .menu-btn,
+        .mod-revamp .player-card,
+        .mod-revamp .training-option,
+        .mod-revamp .stat-card,
+        .mod-revamp .formation-slot,
+        .mod-revamp .player-detail,
+        .mod-revamp .board,
+        .mod-revamp .history-item,
+        .mod-revamp .team-slot,
+        .mod-revamp .identity-btn,
+        .mod-revamp .league-badge,
+        .mod-revamp .current-team,
+        .mod-revamp .selection-area,
+        .mod-revamp .squad-display,
+        .mod-revamp .match-setup,
+        .mod-revamp .stats-container,
+        .mod-revamp .tutorial-content,
+        .mod-revamp .scout-panel,
+        .mod-revamp .formation-area,
+        .mod-revamp .modal-content,
+        .mod-revamp .swap-modal-content,
+        .mod-revamp .cross-train-option {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .mod-revamp .menu-btn:hover,
+        .mod-revamp .player-card:hover,
+        .mod-revamp .training-option:hover:not(.disabled),
+        .mod-revamp .formation-slot:hover,
+        .mod-revamp .player-detail:hover:not(.locked),
+        .mod-revamp .identity-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .mod-revamp h1 {
+            font-size: 36px;
+            background: linear-gradient(90deg, #fff, #a0a0a0, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+
+        .mod-revamp .resolve-btn {
+            background: linear-gradient(90deg, #4a4a6a, #6a6a8a);
+            border: none;
+        }
+
+        .mod-revamp .resolve-btn:hover:not(:disabled) {
+            background: linear-gradient(90deg, #5a5a7a, #7a7a9a);
+        }
+
+        /* VM - Lazy Load animations */
+        .mod-smoothanim .screen.active {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .mod-smoothanim .menu-btn,
+        .mod-smoothanim .player-card,
+        .mod-smoothanim .training-option,
+        .mod-smoothanim .stat-card,
+        .mod-smoothanim .formation-slot,
+        .mod-smoothanim .player-detail,
+        .mod-smoothanim .board,
+        .mod-smoothanim .history-item {
+            opacity: 0;
+            animation: smoothanim 0.5s ease-out forwards;
+        }
+
+        .mod-smoothanim .menu-btn:nth-child(1) { animation-delay: 0.1s; }
+        .mod-smoothanim .menu-btn:nth-child(2) { animation-delay: 0.2s; }
+        .mod-smoothanim .menu-btn:nth-child(3) { animation-delay: 0.3s; }
+        .mod-smoothanim .menu-btn:nth-child(4) { animation-delay: 0.4s; }
+        .mod-smoothanim .menu-btn:nth-child(5) { animation-delay: 0.5s; }
+        .mod-smoothanim .menu-btn:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes smoothanim {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* VM - Ottsan2.1: Optimal pick highlight */
+        .mod-ottsan .player-card.optimal-pick {
+            border-color: #5bc75b;
+            box-shadow: 0 0 20px rgba(91, 199, 91, 0.4);
+            position: relative;
+        }
+
+        .mod-ottsan .player-card.optimal-pick::before {
+            content: "★ OPTIMAL";
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: #5bc75b;
+            color: #000;
+            font-size: 10px;
+            padding: 2px 8px;
+            font-weight: bold;
+        }
+
+        /* VM - TrainBud: Auto-allocate indicator */
+        .mod-trainbud .training-option.auto-selected {
+            border-color: #c7b55b;
+            box-shadow: 0 0 15px rgba(199, 181, 91, 0.3);
+        }
+
+        .mod-trainbud .training-option.auto-selected::after {
+            content: "AUTO";
+            display: block;
+            margin-top: 8px;
+            font-size: 10px;
+            color: #c7b55b;
+            font-weight: bold;
+        }
+
+        /* OM - Attribute suggestions in match */
+        .mod-optimization .attribute-select option.suggested {
+            color: #5bc75b;
+            font-weight: bold;
+        }
+
+        .mod-optimization .board-player.user::after {
+            content: "SUGGESTED";
+            display: none;
+            font-size: 9px;
+            color: #5bc75b;
+            margin-top: 4px;
+        }
+
+        .mod-optimization .board-player.user.has-suggestion::after {
+            display: block;
+        }
+
+        /* Roman numerals styling */
+        .roman-num {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+        }
+
         @media (max-width: 768px) {
             .menu-grid,
             .training-grid,
@@ -1237,6 +1440,81 @@
                 flex-direction: column;
                 gap: 10px;
             }
+
+            /* Focus Mode */
+            .mod-focus .screen.active {
+                position: relative;
+            }
+            .mod-focus .screen.active::before {
+                content: '';
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.7);
+                z-index: -1;
+                pointer-events: none;
+            }
+            .mod-focus .screen.active > *.unfocused {
+                filter: blur(3px) brightness(0.3);
+                transition: all 0.3s;
+            }
+            .mod-focus .screen.active > *.focused {
+                filter: none;
+                z-index: 10;
+                transform: scale(1.02);
+                transition: all 0.3s;
+            }
+
+            /* Speed Lines */
+            .speed-line {
+                position: fixed;
+                width: 100px;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, #fff, transparent);
+                pointer-events: none;
+                z-index: 9999;
+                animation: speedStreak 0.5s ease-out forwards;
+            }
+            @keyframes speedStreak {
+                0% { opacity: 1; transform: scaleX(0); }
+                100% { opacity: 0; transform: scaleX(2) translateX(50px); }
+            }
+
+            /* Colorblind Modes */
+            .mod-colorblind-protanopia { filter: url('#protanopia'); }
+            .mod-colorblind-deuteranopia { filter: url('#deuteranopia'); }
+            .mod-colorblind-tritanopia { filter: url('#tritanopia'); }
+            .mod-colorblind-achromatopsia { filter: grayscale(100%) contrast(1.2); }
+
+            /* Minimalist */
+            .mod-minimal * {
+                box-shadow: none !important;
+                text-shadow: none !important;
+                border-radius: 0 !important;
+                background-image: none !important;
+            }
+            .mod-minimal .menu-btn,
+            .mod-minimal .player-card,
+            .mod-minimal .training-option {
+                border: 1px solid #444;
+                background: #1a1a1a;
+            }
+
+            /* Brainrot */
+            .mod-brainrot * {
+                animation: wobble 3s ease-in-out infinite;
+            }
+            @keyframes wobble {
+                0%, 100% { transform: rotate(0deg); }
+                25% { transform: rotate(0.5deg); }
+                75% { transform: rotate(-0.5deg); }
+            }
+            .mod-brainrot h1 {
+                animation: shake 0.5s infinite;
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                50% { transform: translateX(2px); }
+            }
         }
     </style>
 </head>
@@ -1255,10 +1533,10 @@
             <div class="league-badge">
                 <div class="league-name" id="current-league">Pawns League</div>
                 <div class="league-record">
-                    Squad Wins: <span id="squad-wins">0</span>/5 | Season: <span id="season-matches">0</span>/10
+                    Squad Wins: <span id="squad-wins">0</span>/V | Season: <span id="season-matches">0</span>/X
                 </div>
                 <div class="season-warning" id="season-warning" style="display: none;">
-                    Season ending soon! You must redraft after 10 matches.
+                    Season ending soon! You must redraft after X matches.
                 </div>
             </div>
             
@@ -1346,21 +1624,21 @@
         <!-- Formation Screen -->
         <div id="formation-screen" class="screen">
             <h2 style="text-align: center;">Set Your Formation</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 10px;">Drag players to arrange match order (1 vs 1, 2 vs 2, etc.)</p>
+            <p style="text-align: center; color: #666; margin-bottom: 10px;">Drag players to arrange match order (I vs I, II vs II, etc.)</p>
             <p style="text-align: center; color: #888; font-size: 12px; margin-bottom: 30px;">
-                <span style="color: #c75b5b;">Spearhead:</span> Highest Attack at #1 gets +2 Attack but -1 to other stats | 
-                <span style="color: #5b7bc7;">Anchor:</span> Highest Defense at #4 turns first loss into draw, gives random teammate +1 Defense
+                <span style="color: #c75b5b;">Spearhead:</span> Highest Attack at #I gets +II Attack but -I to other stats | 
+                <span style="color: #5b7bc7;">Anchor:</span> Highest Defense at #IV turns first loss into draw, gives random teammate +I Defense
             </p>
             
             <div class="formation-area">
                 <div class="formation-slots" id="formation-slots"></div>
-                <div class="formation-hint">Your #1 will face opponent's #1, #2 vs #2, etc.</div>
+                <div class="formation-hint">Your #I will face opponent's #I, #II vs #II, etc.</div>
             </div>
 
             <div class="scout-panel" id="scout-panel">
                 <div class="scout-status" id="scout-status">Scout Tokens: 0</div>
                 <button class="scout-btn" id="scout-btn" onclick="useScout()" disabled>
-                    Scout Opponent (1 Token)
+                    Scout Opponent (I Token)
                 </button>
                 <div id="scouted-reveal"></div>
             </div>
@@ -1383,20 +1661,20 @@
                     <div class="training-grid">
                         <div class="training-option" id="train-attack" onclick="trainSpecific('attack')">
                             <h4>Attack Training</h4>
-                            <p>+1 Attack to one player</p>
-                            <div class="cost">2 Points</div>
+                            <p>+I Attack to one player</p>
+                            <div class="cost">II Points</div>
                             <div class="risk" id="risk-attack">Risk: Low</div>
                         </div>
                         <div class="training-option" id="train-defense" onclick="trainSpecific('defense')">
                             <h4>Defense Training</h4>
-                            <p>+1 Defense to one player</p>
-                            <div class="cost">2 Points</div>
+                            <p>+I Defense to one player</p>
+                            <div class="cost">II Points</div>
                             <div class="risk" id="risk-defense">Risk: Low</div>
                         </div>
                         <div class="training-option" id="train-positional" onclick="trainSpecific('positional')">
                             <h4>Positional Training</h4>
-                            <p>+1 Positional to one player</p>
-                            <div class="cost">2 Points</div>
+                            <p>+I Positional to one player</p>
+                            <div class="cost">II Points</div>
                             <div class="risk" id="risk-positional">Risk: Low</div>
                         </div>
                     </div>
@@ -1407,20 +1685,20 @@
                     <div class="training-grid">
                         <div class="training-option" id="train-master" onclick="trainMaster()">
                             <h4>Master Class</h4>
-                            <p>+1 to all stats of one player</p>
-                            <div class="cost">5 Points</div>
+                            <p>+I to all stats of one player</p>
+                            <div class="cost">V Points</div>
                             <div class="risk">Risk: Very High</div>
                         </div>
                         <div class="training-option" id="train-specialist" onclick="trainSpecialist()">
                             <h4>Specialist</h4>
-                            <p>+2 to one stat (max 15)</p>
-                            <div class="cost">4 Points</div>
+                            <p>+II to one stat (max XV)</p>
+                            <div class="cost">IV Points</div>
                             <div class="risk">Risk: High</div>
                         </div>
                         <div class="training-option" id="train-team" onclick="trainTeam()">
                             <h4>Team Building</h4>
-                            <p>+1 to same stat for all 4 players</p>
-                            <div class="cost">6 Points</div>
+                            <p>+I to same stat for all IV players</p>
+                            <div class="cost">VI Points</div>
                             <div class="risk">Risk: High</div>
                         </div>
                     </div>
@@ -1432,17 +1710,17 @@
                         <div class="training-option" id="train-cross" onclick="showCrossTraining()">
                             <h4>Cross-Training</h4>
                             <p>Swap two stats on one player</p>
-                            <div class="cost">4 Points</div>
+                            <div class="cost">IV Points</div>
                         </div>
                         <div class="training-option" id="train-scout" onclick="buyScout()">
                             <h4>Scout Training</h4>
-                            <p>Gain 2 scout tokens</p>
-                            <div class="cost">3 Points</div>
+                            <p>Gain II scout tokens</p>
+                            <div class="cost">III Points</div>
                         </div>
                         <div class="training-option" id="train-intel" onclick="buyIntel()">
                             <h4>Advanced Intel</h4>
                             <p>Reveal full opponent formation next match</p>
-                            <div class="cost">4 Points</div>
+                            <div class="cost">IV Points</div>
                         </div>
                     </div>
                 </div>
@@ -1476,7 +1754,7 @@
         <div id="cross-train-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 100; justify-content: center; align-items: center;">
             <div style="background: #202020; border: 1px solid #333; padding: 30px; max-width: 500px; width: 90%;">
                 <h3 style="margin-bottom: 20px; color: #a09070;">Cross-Training: Swap Stats</h3>
-                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Select a player and choose two stats to swap. Cost: 4 points.</p>
+                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Select a player and choose two stats to swap. Cost: IV points.</p>
                 <div id="cross-train-players"></div>
                 <div style="text-align: center; margin-top: 20px;">
                     <button class="back-btn" onclick="closeCrossTrainModal()">Cancel</button>
@@ -1488,7 +1766,7 @@
         <div id="swap-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 100; justify-content: center; align-items: center;">
             <div class="swap-modal-content">
                 <h3>Swap Player</h3>
-                <div class="swap-instruction">Choose a replacement from 3 random options</div>
+                <div class="swap-instruction">Choose a replacement from III random options</div>
                 
                 <div class="current-player" id="swap-current-player">
                     <h4>Current Player</h4>
@@ -1507,7 +1785,7 @@
         <!-- Draft Screens -->
         <div id="start-screen" class="screen">
             <div class="squad-lock" id="squad-lock-msg" style="display: none; background: #2a2520; border: 1px solid #4a4030; padding: 16px; margin-bottom: 20px; text-align: center; font-size: 13px; color: #a09070;">
-                Your squad is locked. Win <span id="wins-needed">5</span> more matches to unlock.
+                Your squad is locked. Win <span id="wins-needed">V</span> more matches to unlock.
             </div>
             <h2 style="text-align: center;">Select Your Identity</h2>
             <div class="identity-grid">
@@ -1532,7 +1810,7 @@
         <div id="draft-screen" class="screen">
             <div class="draft-header">
                 <div class="identity-tag">Identity: <span id="current-identity"></span></div>
-                <div class="team-counter">Team: <strong id="team-count">0</strong>/4</div>
+                <div class="team-counter">Team: <strong id="team-count">0</strong>/IV</div>
             </div>
 
             <div class="current-team">
@@ -1552,10 +1830,10 @@
                 <div class="squad-header">
                     <div class="squad-title">Your Squad</div>
                     <div class="wins-until-unlock" id="unlock-status">
-                        Wins until unlock: <span id="unlock-wins">5</span>
+                        Wins until unlock: <span id="unlock-wins">V</span>
                     </div>
                     <div class="swap-tokens" id="swap-tokens-display" style="display: none;">
-                        Swap Tokens: <span id="swap-tokens">2</span>
+                        Swap Tokens: <span id="swap-tokens">II</span>
                     </div>
                 </div>
                 <div class="swap-hint" id="swap-hint" style="display: none;">
@@ -1572,35 +1850,35 @@
         <div id="tutorial-screen" class="screen">
             <div class="tutorial-content">
                 <h3>The Draft</h3>
-                <p>Select an identity. Receive 2 core players with 8+ in that attribute, then draft 2 more.</p>
+                <p>Select an identity. Receive II core players with VIII+ in that attribute, then draft II more.</p>
                 
                 <h3>Formation Tactics</h3>
-                <p>Arrange your 4 players in order before each match. Your #1 faces their #1, etc.</p>
+                <p>Arrange your IV players in order before each match. Your #I faces their #I, etc.</p>
                 <ul>
-                    <li><strong>Spearhead:</strong> Highest Attack at #1 gets +2 Attack but -1 to other stats</li>
-                    <li><strong>Anchor:</strong> Highest Defense at #4 turns first loss into draw, gives random teammate +1 Defense</li>
+                    <li><strong>Spearhead:</strong> Highest Attack at #I gets +II Attack but -I to other stats</li>
+                    <li><strong>Anchor:</strong> Highest Defense at #IV turns first loss into draw, gives random teammate +I Defense</li>
                 </ul>
                 
                 <h3>Rising Stars</h3>
-                <p>Players with all stats under 8 who win 3 matches become Rising Stars, gaining +2 to growth rate.</p>
+                <p>Players with all stats under VIII who win III matches become Rising Stars, gaining +II to growth rate.</p>
                 
                 <h3>Rivalry System</h3>
-                <p>Players who faced the same opponent in consecutive matches enter a grudge match with random +/-1 modifier.</p>
+                <p>Players who faced the same opponent in consecutive matches enter a grudge match with random +/-I modifier.</p>
                 
                 <h3>Legacy Bonus</h3>
-                <p>After 3 seasons, a random retired player becomes a coach, giving +1 to their strongest attribute for the whole team.</p>
+                <p>After III seasons, a random retired player becomes a coach, giving +I to their strongest attribute for the whole team.</p>
                 
                 <h3>Cross-Training</h3>
-                <p>Spend 4 points to swap two stats on a player (e.g., Attack 9/Defense 5 becomes Attack 5/Defense 9).</p>
+                <p>Spend IV points to swap two stats on a player (e.g., Attack IX/Defense V becomes Attack V/Defense IX).</p>
                 
-                <h3>Seasons (10 Matches)</h3>
-                <p>After 10 matches with a squad, you must redraft. Points and league progress carry over.</p>
+                <h3>Seasons (X Matches)</h3>
+                <p>After X matches with a squad, you must redraft. Points and league progress carry over.</p>
                 
                 <h3>Dynamic Difficulty</h3>
-                <p>AI scales with your stats. Higher leagues = stronger opponents. 15 is the absolute stat cap.</p>
+                <p>AI scales with your stats. Higher leagues = stronger opponents. XV is the absolute stat cap.</p>
                 
                 <h3>Squad Swaps</h3>
-                <p>After unlocking your squad (5 wins), you get 2 swap tokens to change players via the 1-of-3 draft method.</p>
+                <p>After unlocking your squad (V wins), you get II swap tokens to change players via the I-of-III draft method.</p>
                 
                 <h3>League Progression</h3>
                 <div class="league-list" id="league-list"></div>
@@ -1635,6 +1913,180 @@
     </div>
 
     <script>
+        // ==================== MOD SYSTEM ====================
+        // ==================== MOD SYSTEM ====================
+const ModSystem = {
+    activeMods: new Set(),
+    cpmTracker: { clicks: 0, lastTime: Date.now(), streak: 0 },
+    
+    visual: {
+        swag1: () => {
+            document.body.classList.add('mod-swag1');
+            console.log('🌈 VM-Swag1 activated: Rainbow borders');
+        },
+        
+        revamp: () => {
+            document.body.classList.add('mod-revamp');
+            console.log('✨ VM-Revamp activated: Glassmorphism');
+        },
+        
+        smoothanim: () => {
+            document.body.classList.add('mod-smoothanim');
+            console.log('🐌 VM-SmoothAnim activated');
+        },
+        
+        romans: () => {
+            document.body.classList.add('mod-romans');
+            ModSystem.converters.enableRomans();
+            console.log('🏛️ VM-Romans activated');
+        },
+        
+        focus: () => {
+            document.body.classList.add('mod-focus');
+            ModSystem.features.focusMode = true;
+            ModSystem.initFocusMode();
+            console.log('🎯 VM-FocusMode activated: Background dimmed');
+        },
+        
+        speedLines: () => {
+            document.body.classList.add('mod-speedlines');
+            ModSystem.features.speedLines = true;
+            ModSystem.initSpeedLines();
+            console.log('⚡ VM-SpeedLines activated: Click fast for effects');
+        },
+        
+        minimal: () => {
+            document.body.classList.add('mod-minimal');
+            console.log('🧊 VM-Minimalist activated: Clean flat design');
+        },
+        
+        brainrot: () => {
+            document.body.classList.add('mod-brainrot');
+            ModSystem.features.brainrot = true;
+            ModSystem.initBrainrot();
+            console.log('🧠 VM-Brainrot activated: Pure chaos');
+        }
+    },
+    
+    setColorblind: (type) => {
+        const validTypes = ['protanopia', 'deuteranopia', 'tritanopia', 'achromatopsia'];
+        if (!validTypes.includes(type)) {
+            console.log('Invalid type. Use: protanopia, deuteranopia, tritanopia, achromatopsia');
+            return;
+        }
+        document.body.classList.add(`mod-colorblind-${type}`);
+        console.log(`🎨 Colorblind mode: ${type}`);
+    },
+    
+    features: {
+        focusMode: false,
+        speedLines: false,
+        brainrot: false
+    },
+    
+    initFocusMode: () => {
+        // Add focus overlay that tracks active element
+        const updateFocus = () => {
+            document.querySelectorAll('.mod-focus .screen.active > *').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.querySelectorAll('.mod-focus .screen.active > *').forEach(sib => {
+                        if (sib !== el) sib.classList.add('unfocused');
+                    });
+                    el.classList.remove('unfocused');
+                    el.classList.add('focused');
+                });
+            });
+        };
+        
+        const observer = new MutationObserver(updateFocus);
+        observer.observe(document.body, { childList: true, subtree: true });
+        updateFocus();
+    },
+    
+    initSpeedLines: () => {
+        document.addEventListener('click', (e) => {
+            const now = Date.now();
+            const diff = now - ModSystem.cpmTracker.lastTime;
+            
+            if (diff < 300) {
+                ModSystem.cpmTracker.streak++;
+            } else {
+                ModSystem.cpmTracker.streak = Math.max(0, ModSystem.cpmTracker.streak - 1);
+            }
+            ModSystem.cpmTracker.lastTime = now;
+            
+            if (ModSystem.cpmTracker.streak > 2) {
+                ModSystem.createSpeedLine(e.clientX, e.clientY);
+            }
+        });
+    },
+    
+    createSpeedLine: (x, y) => {
+        const line = document.createElement('div');
+        line.className = 'speed-line';
+        line.style.left = x + 'px';
+        line.style.top = y + 'px';
+        line.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(line);
+        setTimeout(() => line.remove(), 500);
+    },
+    
+    initBrainrot: () => {
+        const brainrotText = {
+            'Start Match': ['LOCK IN', 'GRIND TIME', 'RIZZ UP', 'SIGMA MODE'],
+            'View Squad': ['THE BOYS', 'SQUAD CHECK', 'LOOK AT EM', 'MY GOATS'],
+            'Training Camp': ['GET GOOD', 'GRINDSET', 'MAXXING', 'LEVEL UP FR'],
+            'Stats': ['THE NUMBERS', 'LORE CHECK', 'RATIO', 'VICTORY LAP'],
+            'Tutorial': ['HOW 2 PLAY', 'GIT GUD', 'WATCH THIS', 'REAL?'],
+            'Resign': ['GIVE UP', 'ITS OVER', 'RAGEQUIT', 'UNALIVE SAVE'],
+            'Victory': ['W', 'BIG W', 'GYATT', 'NO CAP'],
+            'Defeat': ['L + RATIO', 'UNLUCKY', 'SKILL ISSUE', 'NPC MOMENT']
+        };
+        
+        const replaceText = () => {
+            document.querySelectorAll('h3, .result-text, button, .menu-btn h3').forEach(el => {
+                const original = el.textContent.trim();
+                if (brainrotText[original]) {
+                    const options = brainrotText[original];
+                    el.textContent = options[Math.floor(Math.random() * options.length)];
+                }
+            });
+        };
+        
+        setInterval(replaceText, 3000);
+        replaceText();
+    },
+    
+    converters: {
+        romanMap: { /* ... same as before ... */ },
+        toRoman: (num) => { /* ... same ... */ },
+        enableRomans: () => { /* ... same ... */ }
+    },
+    
+    init: () => {
+        console.log('🎮 FPL Mod System');
+        console.log('VM.enableSwag1() | VM.enableRevamp() | VM.enableSmoothAnim()');
+        console.log('VM.enableRomans() | VM.enableFocus() | VM.enableSpeedLines()');
+        console.log('VM.enableMinimal() | VM.enableBrainrot()');
+        console.log("VM.setColorblind('protanopia' | 'deuteranopia' | 'tritanopia' | 'achromatopsia')");
+    }
+};
+
+window.VM = {
+    enableSwag1: ModSystem.visual.swag1,
+    enableRevamp: ModSystem.visual.revamp,
+    enableSmoothAnim: ModSystem.visual.smoothanim,
+    enableRomans: ModSystem.visual.romans,
+    enableFocus: ModSystem.visual.focus,
+    enableSpeedLines: ModSystem.visual.speedLines,
+    enableMinimal: ModSystem.visual.minimal,
+    enableBrainrot: ModSystem.visual.brainrot,
+    setColorblind: ModSystem.setColorblind
+};
+
+window.addEventListener('load', ModSystem.init);
+
+        // ==================== GAME CODE ====================
         const LEAGUES = [
             'Pawns League',
             'Bishops League',
@@ -1670,7 +2122,7 @@
             {"name": "Alireza Firouzja", "attack": 9, "defense": 7, "positional": 8},
             {"name": "Levon Aronian", "attack": 9, "defense": 7, "positional": 9},
             {"name": "Wesley So", "attack": 7, "defense": 9, "positional": 9},
-            {"name": "Anish Giri", "attack": 6, "defense": 9, "positional": 9},
+            {"name": "Anish Giri", "attack": 7, "defense": 9, "positional": 9},
             {"name": "Vladimir Ivanchuk", "attack": 9, "defense": 7, "positional": 9},
             
             // Specialist tier (unbalanced - high in one, low in others)
@@ -1689,7 +2141,7 @@
             {"name": "Akiba Rubinstein", "attack": 6, "defense": 9, "positional": 10},
             
             // Average tier (6-7)
-            {"name": "Viswanathan Anand", "attack": 7, "defense": 8, "positional": 8},
+            {"name": "Viswanathan Anand", "attack": 8, "defense": 8, "positional": 8},
             {"name": "Vladimir Kramnik", "attack": 7, "defense": 9, "positional": 9},
             {"name": "Maxime Vachier-Lagrave", "attack": 9, "defense": 7, "positional": 8},
             {"name": "Alexander Grischuk", "attack": 9, "defense": 7, "positional": 8},
@@ -1724,7 +2176,7 @@
             
             // Very weak in specific areas
             {"name": "Dawid Janowski", "attack": 9, "defense": 4, "positional": 5},
-            {"name": "Henry Bird", "attack": 8, "defense": 4, "positional": 5},
+            {"name": "Henry Bird", "attack": 8, "defense": 4, "positional": 6},
             {"name": "Joseph Blackburne", "attack": 7, "defense": 5, "positional": 6},
             {"name": "Isidor Gunsberg", "attack": 6, "defense": 6, "positional": 5},
             {"name": "Mikhail Chigorin", "attack": 8, "defense": 5, "positional": 4},
